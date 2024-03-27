@@ -14,6 +14,9 @@
     - name: Ensure instances are present
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.gcp_compute_instance
+        apply:
+          tags:
+            - gcp_compute_instance_provision
       loop: "{{ gcp_compute_instances }}"
       loop_control:
         loop_var: gcp_instance
@@ -34,6 +37,9 @@
     - name: Ensure instances are absent
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.gcp_compute_instance
+        apply:
+          tags:
+            - gcp_compute_instance_deprovision
       loop: "{{ gcp_compute_instances }}"
       loop_control:
         loop_var: gcp_instance
