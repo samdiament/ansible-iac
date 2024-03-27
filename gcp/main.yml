@@ -21,5 +21,5 @@
         gcp_network_auto_create_subnets: "{{ gcp_net.gcp_network_auto_create_subnets | default(omit) }}"
         gcp_network_description: "{{ gcp_net.gcp_network_description | default(omit) }}"
         gcp_network_mtu: "{{ gcp_net.gcp_network_mtu | default(omit) }}"
-        gcp_project: "{{ gcp_net.gcp_project | default(omit) }}"
+        gcp_project: "{{ gcp_net.gcp_project | gcp_project }}"
       when: gcp_net.gcp_network_state == 'present'
