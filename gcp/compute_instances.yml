@@ -30,6 +30,7 @@
         gcp_compute_instance_labels: "{{ gcp_instance.gcp_compute_instance_labels | default(omit) }}"
         gcp_compute_instance_deletion_protection: "{{ gcp_instance.gcp_compute_instance_deletion_protection | default(omit) }}"
         gcp_compute_instance_tags: "{{ gcp_instance.gcp_compute_instance_tags | default(omit) }}"
+        gcp_compute_instance_state: "{{ gcp_instance.gcp_compute_instance_state }}"
       when: gcp_instance.gcp_compute_instance_state == 'present'
       tags:
         - gcp_compute_instance_provision
