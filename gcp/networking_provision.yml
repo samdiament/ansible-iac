@@ -1,5 +1,5 @@
 ---
-- name: Ensure GCP objects are at desired state
+- name: Ensure GCP networking is configured and at desired state
   hosts: gcpclient
   become: false
   gather_facts: false
@@ -37,14 +37,3 @@
         gcp_firewall_source_ranges: "{{ gcp_fw.gcp_firewall_source_ranges | default(omit) }}"
         gcp_firewall_state: "{{ gcp_fw.gcp_firewall_state }}"
       when: gcp_fw.gcp_firewall_state == 'present'
-
-    - name: Ensure firewalls are absent
-      ansible.builtin.include_role:
-        name: pumphouse_p.infrastructure.gcp_firewall
-      loop: "{{ gcp_firewalls }}"
-      loop_control:
-        loop_var: gcp_fw
-      vars:
-        gcp_firewall_name: "{{ gcp_fw.gcp_firewall_name }}"
-        gcp_firewall_state: "{{ gcp_fw.gcp_firewall_state }}"
-      when: gcp_fw.gcp_firewall_state == 'absent'

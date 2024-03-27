@@ -1,0 +1,32 @@
+---
+- name: Ensure GCP networking objects are not present
+  hosts: gcpclient
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars
+
+    - name: Ensure firewalls are absent
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.gcp_firewall
+      loop: "{{ gcp_firewalls }}"
+      loop_control:
+        loop_var: gcp_fw
+      vars:
+        gcp_firewall_name: "{{ gcp_fw.gcp_firewall_name }}"
+        gcp_firewall_state: "{{ gcp_fw.gcp_firewall_state }}"
+      when: gcp_fw.gcp_firewall_state == 'absent'
+
+    - name: Ensure networks are absent
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.gcp_network
+      loop: "{{ gcp_networks }}"
+      loop_control:
+        loop_var: gcp_net
+      vars:
+        gcp_network_name: "{{ gcp_net.gcp_network_name }}"
+        gcp_network_state: "{{ gcp_net.gcp_network_state }}"
+      when: gcp_net.gcp_network_state == 'absent'
