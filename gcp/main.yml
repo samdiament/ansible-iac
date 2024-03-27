@@ -1,0 +1,25 @@
+---
+- name: Ensure GCP objects are at desired state
+  hosts: gcpclient
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars
+
+    - name: Manage networks
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.gcp_network
+      loop: "{{ gcp_networks }}"
+      loop_control:
+        loop_var: gcp_net
+      vars:
+        gcp_network_name: "{{ gcp_net.gcp_network_name }}"
+        gcp_network_state: "{{ gcp_net.gcp_network_state }}"
+        gcp_network_auto_create_subnets: "{{ gcp_net.gcp_network_auto_create_subnets | default(omit) }}"
+        gcp_network_description: "{{ gcp_net.gcp_network_description | default(omit) }}"
+        gcp_network_mtu: "{{ gcp_net.gcp_network_mtu | default(omit) }}"
+        gcp_project: "{{ gcp_net.gcp_project | default(omit) }}"
+      when: gcp_net.gcp_network_state == 'present'

@@ -1,0 +1,9 @@
+---
+gcp_networks:
+  - gcp_network_name: default
+    gcp_network_state: present
+    gcp_network_auto_create_subnetworks: true
+  - gcp_network_name: frontend
+    gcp_network_state: present
+    gcp_network_auto_create_subnetworks: true
+    gcp_network_description: frontend application network
