@@ -8,6 +8,8 @@
     - name: Load variables
       ansible.builtin.include_vars:
         dir: vars
+      tags:
+        - always
 
     - name: Ensure networks are present
       ansible.builtin.include_role:
