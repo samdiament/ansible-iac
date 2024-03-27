@@ -25,7 +25,7 @@
         gcp_network_mtu: "{{ gcp_net.gcp_network_mtu | default(omit) }}"
       when: gcp_net.gcp_network_state == 'present'
       tags:
-        - network_provision
+        - gcp_network_provision
 
     - name: Ensure firewalls are present
       ansible.builtin.include_role:
@@ -42,7 +42,7 @@
         gcp_firewall_state: "{{ gcp_fw.gcp_firewall_state }}"
       when: gcp_fw.gcp_firewall_state == 'present'
       tags:
-        - network_provision
+        - gcp_network_provision
 
     - name: Ensure firewalls are absent
       ansible.builtin.include_role:
@@ -55,7 +55,7 @@
         gcp_firewall_state: "{{ gcp_fw.gcp_firewall_state }}"
       when: gcp_fw.gcp_firewall_state == 'absent'
       tags:
-        - network_deprovision
+        - gcp_network_deprovision
 
     - name: Ensure networks are absent
       ansible.builtin.include_role:
@@ -68,4 +68,4 @@
         gcp_network_state: "{{ gcp_net.gcp_network_state }}"
       when: gcp_net.gcp_network_state == 'absent'
       tags:
-        - network_deprovision
+        - gcp_network_deprovision
