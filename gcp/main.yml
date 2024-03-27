@@ -35,4 +35,5 @@
         gcp_firewall_target_tags: "{{ gcp_fw.gcp_firewall_target_tags | default(omit) }}"
         gcp_firewall_source_tags: "{{ gcp_fw.gcp_firewall_source_tags | default(omit) }}"
         gcp_firewall_source_ranges: "{{ gcp_fw.gcp_firewall_source_ranges | default(omit) }}"
+        gcp_firewall_state: "{{ gcp_fw.gcp_firewall_state }}"
       when: gcp_fw.gcp_firewall_state == 'present'
