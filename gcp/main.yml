@@ -9,7 +9,7 @@
       ansible.builtin.include_vars:
         dir: vars
 
-    - name: Manage networks
+    - name: Ensure networks are present
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.gcp_network
       loop: "{{ gcp_networks }}"
@@ -22,3 +22,17 @@
         gcp_network_description: "{{ gcp_net.gcp_network_description | default(omit) }}"
         gcp_network_mtu: "{{ gcp_net.gcp_network_mtu | default(omit) }}"
       when: gcp_net.gcp_network_state == 'present'
+
+    - name: Ensure firewalls are present
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.gcp_firewall
+      loop: "{{ gcp_firewalls }}"
+      loop_control:
+        loop_var: gcp_fw
+      vars:
+        gcp_firewall_name: "{{ gcp_fw.gcp_firewall_name }}"
+        gcp_firewall_allowed: "{{ gcp_fw.gcp_firewall_allowed | default(omit) }}"
+        gcp_firewall_target_tags: "{{ gcp_fw.gcp_firewall_target_tags | default(omit) }}"
+        gcp_firewall_source_tags: "{{ gcp_fw.gcp_firewall_source_tags | default(omit) }}"
+        gcp_firewall_source_ranges: "{{ gcp_fw.gcp_firewall_source_ranges | default(omit) }}"
+      when: gcp_fw.gcp_network_state == 'absent'

@@ -1,0 +1,24 @@
+---
+gcp_firewalls:
+  - gcp_firewall_name: webservers
+    gcp_firewall_allowed:
+      - ip_protocol: tcp
+        ports:
+          - '80'
+          - '443'
+    gcp_firewall_target_tags:
+      - http
+      - https
+    gcp_firewall_source_ranges:
+      - 0.0.0.0/0
+    gcp_firewall_state: present
+  - gcp_firewall_name: ssh
+    gcp_firewall_allowed:
+      - ip_protocol: tcp
+        ports:
+          - '22'
+    gcp_firewall_target_tags:
+      - ssh
+    gcp_firewall_source_ranges:
+      - 0.0.0.0/0
+    gcp_firewall_state: present
