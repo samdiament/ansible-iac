@@ -7,5 +7,5 @@
 - name: Ensure virtual networks are absent
   ansible.builtin.include_tasks:
     file: absent.yml
-  when: azure_mode == 'absent'
+  when: azure_mode == 'deprovision'
 
