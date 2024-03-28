@@ -9,7 +9,7 @@
   async: 1000
   poll: 0
   changed_when: __azure_virtualmachine.changed
-  loop: "{{ range(0, (item.virtualmachine_count | default(azure_virtualmachine_count)) }}"
+  loop: "{{ range(0, (item.virtualmachine_count | default(azure_virtualmachine_count))) }}"
   loop_control:
     loop_var: i
 
