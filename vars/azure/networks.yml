@@ -12,7 +12,7 @@ azure_subnets:
 
 azure_securitygroups:
   - name: default
-    state: present
+    state: absent
     purge_rules: true
     rules:
       - name: AllowSSH
