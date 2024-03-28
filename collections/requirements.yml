@@ -1,4 +1,0 @@
----
-collections:
-  - source: git@github.com:pumphouse-p/ansible-collection-infrastructure.git
-    type: git

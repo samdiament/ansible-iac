@@ -1,0 +1,10 @@
+---
+- name: Ensure firewall is present with desired configuration
+  google.cloud.gcp_compute_firewall:
+    name: "{{ gcp_firewall_name }}"
+    allowed: "{{ gcp_firewall_allowed | default(omit) }}"
+    target_tags: "{{ gcp_firewall_target_tags | default(omit) }}"
+    source_tags: "{{ gcp_firewall_source_tags | default(omit) }}"
+    source_ranges: "{{ gcp_firewall_source_ranges | default(omit) }}"
+    project: "{{ gcp_project }}"
+    state: present

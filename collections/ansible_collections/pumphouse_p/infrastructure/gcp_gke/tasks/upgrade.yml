@@ -1,0 +1,8 @@
+---
+- name: Upgrade cluster
+  google.cloud.gcp_container_cluster:
+    name: "{{ gcp_gke_name }}"
+    location: "{{ gcp_gke_location }}"
+    project: "{{ gcp_project }}"
+    state: present
+    initial_cluster_version: "{{ gcp_gke_cluster_version }}"

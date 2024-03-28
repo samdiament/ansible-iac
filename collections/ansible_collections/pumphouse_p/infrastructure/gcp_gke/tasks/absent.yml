@@ -1,0 +1,7 @@
+---
+- name: Ensure cluster is absent
+  google.cloud.gcp_container_cluster:
+    name: "{{ gcp_gke_name }}"
+    location: "{{ gcp_gke_location }}"
+    project: "{{ gcp_project }}"
+    state: absent

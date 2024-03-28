@@ -1,0 +1,28 @@
+---
+- name: Ensure cluster is created with desired configuration
+  google.cloud.gcp_container_cluster:
+    name: "{{ gcp_gke_name }}"
+    initial_node_count: "{{ gcp_gke_initial_node_count }}"
+    node_config:
+      machine_type: "{{ gcp_gke_machine_type }}"
+      disk_size_gb: "{{ gcp_gke_disk_size_gb }}"
+    location: "{{ gcp_gke_location }}"
+    project: "{{ gcp_project }}"
+    state: present
+    addons_config:
+      horizontal_pod_autoscaling:
+        disabled: "{{ gcp_gke_disable_horizontal_pod_autoscaling }}"
+      http_load_balancing:
+        disabled: "{{ gcp_gke_disable_http_load_balancing }}"
+      network_policy_config:
+        disabled: "{{ gcp_gke_disable_network_policy_config }}"
+    cluster_ipv4_cidr: "{{ gcp_gke_cluster_ipv4_cidr | default(omit) }}"
+    database_encryption:
+      key_name: "{{ gcp_gke_database_encryption_key_name | default(omit) }}"
+      state: "{{ gcp_gke_database_encryption_state | default(omit) }}"
+    default_max_pods_constraint:
+      max_pods_per_node: "{{ gcp_gke_max_pods_per_node | default(omit) }}"
+    description: "{{ gcp_gke_description | default(omit) }}"
+    enable_kubernetes_alpha: "{{ gcp_gke_enable_kubernetes_alpha | default(omit) }}"
+    enable_tpu: "{{ gcp_gke_enable_tpu | default(omit) }}"
+    initial_cluster_version: "{{ gcp_gke_cluster_version }}"

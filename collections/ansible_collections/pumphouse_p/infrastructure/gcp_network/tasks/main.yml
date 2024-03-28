@@ -1,0 +1,10 @@
+---
+- name: Ensure network is present with desired configuration
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: gcp_network_state == 'present'
+
+- name: Ensure network is absent
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: gcp_network_state == 'absent'

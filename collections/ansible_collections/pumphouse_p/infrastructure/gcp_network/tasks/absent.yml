@@ -1,0 +1,6 @@
+---
+- name: Ensure network is absent
+  google.cloud.gcp_compute_network:
+    name: "{{ gcp_network_name }}"
+    project: "{{ gcp_project }}"
+    state: absent

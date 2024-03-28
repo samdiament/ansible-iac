@@ -1,0 +1,11 @@
+---
+- name: Ensure network is present with desired configuration
+  google.cloud.gcp_compute_network:
+    name: "{{ gcp_network_name }}"
+    auto_create_subnetworks: "{{ gcp_network_auto_create_subnetworks | default(omit) }}"
+    description: "{{ gcp_network_description | default(omit) }}"
+    mtu: "{{ gcp_network_mtu | default(omit) }}"
+    project: "{{ gcp_project | default(omit) }}"
+    routing_config:
+      routing_mode: "{{ gcp_network_routing_mode }}"
+    state: present

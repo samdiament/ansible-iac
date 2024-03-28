@@ -1,0 +1,15 @@
+---
+- name: Ensure cluster is created with desired configuration
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: gcp_gke_state == 'present'
+
+- name: Upgrade cluster to v{{ gcp_gke_target_version }}
+  ansible.builtin.include_tasks:
+    file: upgrade.yml
+  when: gcp_gke_state == 'upgrade'
+
+- name: Ensure cluster is absent
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: gcp_gke_state == 'absent'

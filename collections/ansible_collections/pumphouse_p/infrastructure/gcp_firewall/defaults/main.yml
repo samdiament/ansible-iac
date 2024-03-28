@@ -1,0 +1,14 @@
+---
+gcp_firewall_name: my-firewall
+gcp_firewall_allowed:
+  - ip_protocol: tcp
+    ports:
+      - '22'
+      - '80'
+      - '443'
+gcp_firewall_target_tags:
+  - ssh
+  - http 
+  - https
+gcp_firewall_source_ranges:
+  - 0.0.0.0/0

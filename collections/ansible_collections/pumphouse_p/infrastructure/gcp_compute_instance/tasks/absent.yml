@@ -1,0 +1,7 @@
+---
+- name: Delete instance
+  google.cloud.gcp_compute_instance:
+    name: "{{ gcp_compute_instance_name }}"
+    zone: "{{ gcp_compute_instance_zone | default(gcp_location) }}"
+    project: "{{ gcp_project }}"
+    state: absent

@@ -1,0 +1,5 @@
+---
+gcp_network_state: present
+gcp_network_name: my-network
+gcp_network_routing_mode: REGIONAL
+gcp_network_auto_create_subnetworks: true

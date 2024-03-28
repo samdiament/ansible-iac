@@ -1,0 +1,6 @@
+---
+- name: Ensure firewall is absent
+  google.cloud.gcp_compute_firewall:
+    name: "{{ gcp_firewall_name }}"
+    project: "{{ gcp_project }}"
+    state: absent

@@ -1,0 +1,10 @@
+---
+- name: Ensure instances are present
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: gcp_compute_instance_state == 'present'
+
+- name: Ensure instances are absent
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: gcp_compute_instance_state == 'absent'

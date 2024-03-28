@@ -1,0 +1,9 @@
+---
+gcp_gke_name: my-cluster
+gcp_gke_initial_node_count: 2
+gcp_gke_machine_type: e2-medium
+gcp_gke_cluster_version: 1.27.8-gke.1067004
+gcp_gke_disk_size_gb: 50
+gcp_gke_disable_horizontal_pod_autoscaling: true
+gcp_gke_disable_http_load_balancing: true
+gcp_gke_disable_network_policy_config: true

@@ -25,7 +25,7 @@
         gcp_compute_instance_name: "{{ gcp_instance.gcp_compute_instance_name }}"
         gcp_compute_instance_zone: "{{ gcp_instance.gcp_compute_instance_zone | default(gcp_location) }}"
         gcp_compute_instance_machine_type: "{{ gcp_instance.gcp_compute_instance_machine_type | default(omit) }}"
-        # gcp_compute_instance_disks: "{{ gcp_instance.gcp_compute_instance_disks | default(omit) }}"
+        gcp_compute_instance_disks: "{{ gcp_instance.gcp_compute_instance_disks | default(omit) }}"
         gcp_compute_instance_network_interfaces: "{{ gcp_instance.gcp_compute_instance_network_interfaces | default(omit) }}"
         gcp_compute_instance_metadata: "{{ gcp_instance.gcp_compute_instance_metadata | default(omit) }}"
         gcp_compute_instance_labels: "{{ gcp_instance.gcp_compute_instance_labels | default(omit) }}"
