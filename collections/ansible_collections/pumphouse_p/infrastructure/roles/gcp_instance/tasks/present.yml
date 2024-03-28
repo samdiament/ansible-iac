@@ -11,7 +11,7 @@
     metadata: "{{ item.gcp_instance_metadata | default(gcp_instance_metadata) }}"
     labels: "{{ item.gcp_instance_labels | default(gcp_instance_labels) }}"
     deletion_protection: "{{ item.gcp_instance_deletion_protection | default(gcp_instance_deletion_protection) }}"
-    tags: "{{ item.gcp_instance_tags | default(gcp_instance_deletion_protection) }}"
+    tags: "{{ item.gcp_instance_tags | default(gcp_instance_tags) }}"
   loop: "{{ gcp_instances | selectattr('gcp_instance_state', 'match', 'present') }}"
   async: 1000
   poll: 0
