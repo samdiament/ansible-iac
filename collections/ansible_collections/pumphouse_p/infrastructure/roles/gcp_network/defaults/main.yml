@@ -1,4 +1,6 @@
 ---
+gcp_networks: []
+gcp_networks_mode: provision
 gcp_network_state: present
 gcp_network_name: my-network
 gcp_network_routing_mode: REGIONAL

@@ -1,0 +1,24 @@
+---
+- name: Ensure GCP network objects are present
+  hosts: gcpclient
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars/gcp
+      tags:
+        - always
+
+    - name: Ensure networks are present
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.gcp_network
+      vars:
+        gcp_network_mode: provision
+
+    - name: Ensure firewalls are present
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.gcp_firewall
+      vars:
+        gcp_network_mode: provision

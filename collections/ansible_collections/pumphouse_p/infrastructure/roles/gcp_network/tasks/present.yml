@@ -1,11 +1,26 @@
 ---
 - name: Ensure network is present with desired configuration
   google.cloud.gcp_compute_network:
-    name: "{{ gcp_network_name }}"
-    auto_create_subnetworks: "{{ gcp_network_auto_create_subnetworks | default(omit) }}"
-    description: "{{ gcp_network_description | default(omit) }}"
-    mtu: "{{ gcp_network_mtu | default(omit) }}"
-    project: "{{ gcp_project | default(omit) }}"
+    name: "{{ item.gcp_network_name }}"
+    auto_create_subnetworks: "{{ item.gcp_network_auto_create_subnetworks | default(gcp_network_auto_create_subnetworks) }}"
+    description: "{{ item.gcp_network_description | default(omit) }}"
+    mtu: "{{ item.gcp_network_mtu | default(omit) }}"
+    project: "{{ item.gcp_project | default(omit) }}"
     routing_config:
-      routing_mode: "{{ gcp_network_routing_mode }}"
+      routing_mode: "{{ item.gcp_network_routing_mode | default(gcp_network_routing_mode) }}"
     state: present
+  loop: "{{ gcp_networks | selectattr('gcp_network_state', 'match', 'present') }}"
+  async: 1000
+  poll: 0
+  register: __gcp_net
+  changed_when: __gcp_net.changed
+
+- name: Wait for provisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __gcp_net_async_result
+  until: __gcp_net_async_result.finished
+  retries: 100
+  delay: 3
+  loop: "{{ __gcp_net.results }}"
+  when: item.ansible_job_id is defined
