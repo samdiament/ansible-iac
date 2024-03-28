@@ -1,8 +1,11 @@
 ---
 azure_virtualmachine_ssh_password_enabled: false
-azure_virtualmachine_ssh_public_keys: []
 azure_virtualmachine_tags:
   os_type: linux
 
 azure_virtualmachine_open_ports:
   - "22"
+
+azure_virtualmachine_ssh_public_keys:
+  - key_data: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDGDL7N6mB52KISe2uTRsmDR64FDlJ51YjS17+xOB+DGx/A8SjsmqpyfxN2iRdm/IDDo5ZaovbQPG0SPfF0+HDHUSr8VZA32YHoT1cJgSOXnxGXsjegKwz1e9lv3ALdqBMeR9fk+5Vd1VUIcvVKONlQIXcwbOsyTgCpjad5r4eAZjRbDS08va5dMPKsDtesNZxIr447X/TJGoH8ghAdnQWHYEODc2SndO0IWsc5ozw2RfIdT2RGVaY/rvrI++QQNVUQFl1P8E1U9N8oIVGtChGtQNWqEXFG8+wWNY55QHOJRaJBheI+Ke8lj83vjFoLdwW1MupKN6zB63GfeAwUUaMlPs+34vJgrAN4kCcarPepLYAS2j567Fvde1e2WzZWvF+97AFB3R/n6TOI+hKxCth7IJVkRxCBO//gX17MAWJgKmA2RBuOqwS/RjxjThozHI/4e1pN4xvjiZqpkXsoBjgEOOUZuLI3N3/5Is2qI5S7c7Mb/Ab4VnaTvLTCgIak4TU= deparris@deparris.remote.csb # noqa: yaml[line-length]
+    path: /home/ansibleadmin/.ssh/authorized_keys
