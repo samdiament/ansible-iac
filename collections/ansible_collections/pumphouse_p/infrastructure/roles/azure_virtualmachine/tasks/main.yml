@@ -9,4 +9,4 @@
   ansible.builtin.include_tasks:
     file: absent.yml
   when: azure_mode == 'deprovision'
-  loop: "{{ azure_instances | ((selectattr('azure_virtualmachine_state', '==', 'absent')) | list) }}"
+  loop: "{{ azure_instances | selectattr('azure_virtualmachine_state', '==', 'absent') }}"
