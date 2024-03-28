@@ -1,0 +1,16 @@
+---
+- name: Ensure GKE clusters are present
+  hosts: gcpclient
+  become: false
+  gather_facts: false
+  vars:
+    gcp_mode: provision
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars/gcp
+
+    - name: Ensure GKE clusters are present
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.gcp_gke

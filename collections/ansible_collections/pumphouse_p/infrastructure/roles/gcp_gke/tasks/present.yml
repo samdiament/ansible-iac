@@ -1,28 +1,43 @@
 ---
 - name: Ensure cluster is created with desired configuration
   google.cloud.gcp_container_cluster:
-    name: "{{ gcp_gke_name }}"
-    initial_node_count: "{{ gcp_gke_initial_node_count }}"
+    name: "{{ item.gcp_gke_name }}"
+    initial_node_count: "{{ item.gcp_gke_initial_node_count | default(gcp_gke_initial_node_count) }}"
     node_config:
-      machine_type: "{{ gcp_gke_machine_type }}"
-      disk_size_gb: "{{ gcp_gke_disk_size_gb }}"
-    location: "{{ gcp_gke_location }}"
-    project: "{{ gcp_project }}"
+      machine_type: "{{ item.gcp_gke_machine_type | default(gcp_gke_machine_type) }}"
+      disk_size_gb: "{{ item.gcp_gke_disk_size_gb | default(gcp_gke_disk_size_gb) }}"
+    location: "{{ item.gcp_gke_location | default(gcp_location) }}"
+    project: "{{ item.gcp_project | default(gcp_project) }}"
     state: present
     addons_config:
       horizontal_pod_autoscaling:
-        disabled: "{{ gcp_gke_disable_horizontal_pod_autoscaling }}"
+        disabled: "{{ item.gcp_gke_disable_horizontal_pod_autoscaling | default(gcp_gke_disable_horizontal_pod_autoscaling) }}"
       http_load_balancing:
-        disabled: "{{ gcp_gke_disable_http_load_balancing }}"
+        disabled: "{{ item.gcp_gke_disable_http_load_balancing | default(gcp_gke_disable_http_load_balancing) }}"
       network_policy_config:
-        disabled: "{{ gcp_gke_disable_network_policy_config }}"
-    cluster_ipv4_cidr: "{{ gcp_gke_cluster_ipv4_cidr | default(omit) }}"
+        disabled: "{{ item.gcp_gke_disable_network_policy_config | default(gcp_gke_disable_network_policy_config) }}"
+    cluster_ipv4_cidr: "{{ item.gcp_gke_cluster_ipv4_cidr | default(omit) }}"
     database_encryption:
-      key_name: "{{ gcp_gke_database_encryption_key_name | default(omit) }}"
-      state: "{{ gcp_gke_database_encryption_state | default(omit) }}"
+      key_name: "{{ item.gcp_gke_database_encryption_key_name | default(omit) }}"
+      state: "{{ item.gcp_gke_database_encryption_state | default(omit) }}"
     default_max_pods_constraint:
-      max_pods_per_node: "{{ gcp_gke_max_pods_per_node | default(omit) }}"
-    description: "{{ gcp_gke_description | default(omit) }}"
-    enable_kubernetes_alpha: "{{ gcp_gke_enable_kubernetes_alpha | default(omit) }}"
-    enable_tpu: "{{ gcp_gke_enable_tpu | default(omit) }}"
-    initial_cluster_version: "{{ gcp_gke_cluster_version }}"
+      max_pods_per_node: "{{ item.gcp_gke_max_pods_per_node | default(omit) }}"
+    description: "{{ item.gcp_gke_description | default(omit) }}"
+    enable_kubernetes_alpha: "{{ item.gcp_gke_enable_kubernetes_alpha | default(omit) }}"
+    enable_tpu: "{{ item.gcp_gke_enable_tpu | default(omit) }}"
+    initial_cluster_version: "{{ item.gcp_gke_cluster_version }}"
+  loop: "{{ gcp_gke_clusters | selectattr('gcp_gke_state', 'match', 'present') }}"
+  async: 1000
+  poll: 0
+  register: __gcp_gke_cluster
+  changed_when: __gcp_gke_cluster.changed
+
+- name: Wait for provisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __gcp_gke_cluster_async_result
+  until: __gcp_gke_cluster_async_result.finished
+  retries: 600
+  delay: 3
+  loop: "{{ __gcp_gke_cluster.results }}"
+  when: item.ansible_job_id is defined

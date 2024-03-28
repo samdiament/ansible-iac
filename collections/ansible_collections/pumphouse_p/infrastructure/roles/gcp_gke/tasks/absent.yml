@@ -1,7 +1,22 @@
 ---
 - name: Ensure cluster is absent
   google.cloud.gcp_container_cluster:
-    name: "{{ gcp_gke_name }}"
-    location: "{{ gcp_gke_location }}"
-    project: "{{ gcp_project }}"
+    name: "{{ item.gcp_gke_name }}"
+    location: "{{ item.gcp_gke_location | default(gcp_location) }}"
+    project: "{{ item.gcp_project | default(gcp_project) }}"
     state: absent
+  loop: "{{ gcp_gke_clusters | selectattr('gcp_gke_state', 'match', 'absent') }}"
+  async: 1000
+  poll: 0
+  register: __gcp_gke_cluster
+  changed_when: __gcp_gke_cluster.changed
+
+- name: Wait for deprovisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __gcp_gke_cluster_async_result
+  until: __gcp_gke_cluster_async_result.finished
+  retries: 600
+  delay: 3
+  loop: "{{ __gcp_gke_cluster.results }}"
+  when: item.ansible_job_id is defined
