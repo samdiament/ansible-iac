@@ -1,34 +1,11 @@
 ---
-- name: Ensure security groups are present with desired configuration
-  azure.azcollection.azure_rm_securitygroup:
-    name: "{{ securitygroup.name }}"
-    resource_group: "{{ securitygroup.resource_group | default(azure_resourcegroup_name) }}"
-    state: present
-    append_tags: "{{ securitygroup.append_tags | default(azure_securitygroup_append_tags) }}"
-    default_rules: "{{ securitygroup.default_rules | default(omit) }}"
-    location: "{{ securitygroup.location | default(omit) }}"
-    purge_default_rules: "{{ securitygroup.purge_default_rules | default(azure_securitygroup_purge_default_rules) }}"
-    purge_rules: "{{ securitygroup.purge_rules | default(azure_securitygroup_purge_rules) }}"
-    rules: "{{ securitygroup.rules }}"
-  loop: "{{ azure_securitygroups | selectattr('state', '==', 'present') }}"
-  loop_control:
-    loop_var: securitygroup
-  register: __present_securitygroups
-
-- name: Debug output
-  ansible.builtin.debug:
-    var: __present_securitygroups
+- name: Ensure security groups are present
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: azure_mode == 'provision'
 
 - name: Ensure security groups are absent
-  azure.azcollection.azure_rm_securitygroup:
-    name: "{{ securitygroup.name }}"
-    resource_group: "{{ securitygroup.resource_group | default(azure_resourcegroup_name) }}"
-    state: absent
-  loop: "{{ azure_securitygroups | selectattr('state', '==', 'absent') }}"
-  loop_control:
-    loop_var: securitygroup
-  register: __absent_securitygroups
-
-- name: Debug output
-  ansible.builtin.debug:
-    var: __absent_securitygroups
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: azure_mode == 'deprovision'
+ 

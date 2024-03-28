@@ -1,5 +1,5 @@
 ---
-- name: Ensure Azure networks are present
+- name: Ensure Azure network objects are present
   hosts: azureclient
   become: false
   gather_facts: false
@@ -18,3 +18,7 @@
     - name: Provision subnets on Azure
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.azure_subnet
+
+    - name: Provision security groups on Azure
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.azure_securitygroup

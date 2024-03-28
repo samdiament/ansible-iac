@@ -1,0 +1,13 @@
+- name: Ensure security groups are absent
+  azure.azcollection.azure_rm_securitygroup:
+    name: "{{ securitygroup.name }}"
+    resource_group: "{{ securitygroup.resource_group | default(azure_resourcegroup_name) }}"
+    state: absent
+  loop: "{{ azure_securitygroups | selectattr('state', '==', 'absent') }}"
+  loop_control:
+    loop_var: securitygroup
+  register: __absent_securitygroups
+
+- name: Debug output
+  ansible.builtin.debug:
+    var: __absent_securitygroups

@@ -1,5 +1,5 @@
 ---
-- name: Ensure Azure networks are absent
+- name: Ensure Azure network objects are absent
   hosts: azureclient
   become: false
   gather_facts: false
@@ -18,3 +18,7 @@
     - name: Deprovision networks on Azure
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.azure_network
+
+    - name: Deprovision security groups on Azure
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.azure_securitygroup

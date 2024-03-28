@@ -8,3 +8,25 @@ azure_subnets:
     state: present
     virtual_network_name: default
     address_prefix_cidr: 10.254.1.0/24
+
+azure_firewalls:
+  - name: default
+    state: present
+    purge_rules: true
+    rules:
+      - name: AllowSSH
+        protocol: Tcp
+        source_address_prefix:
+          - 0.0.0.0/0
+        destination_port_range: 22
+        access: Allow
+        priority: 101
+        direction: Inbound
+      - name: AllowWinRM
+        protocol: Tcp
+        source_address_prefix:
+          - 0.0.0.0/0
+        destination_port_range: 5985
+        access: Allow
+        priority: 102
+        direction: Inbound
