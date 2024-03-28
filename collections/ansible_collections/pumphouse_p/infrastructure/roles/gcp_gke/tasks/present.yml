@@ -25,7 +25,7 @@
     description: "{{ item.gcp_gke_description | default(omit) }}"
     enable_kubernetes_alpha: "{{ item.gcp_gke_enable_kubernetes_alpha | default(omit) }}"
     enable_tpu: "{{ item.gcp_gke_enable_tpu | default(omit) }}"
-    initial_cluster_version: "{{ item.gcp_gke_cluster_version }}"
+    initial_cluster_version: "{{ item.gcp_gke_cluster_version | default(gcp_gke_cluster_version) }}"
   loop: "{{ gcp_gke_clusters | selectattr('gcp_gke_state', 'match', 'present') }}"
   async: 1000
   poll: 0

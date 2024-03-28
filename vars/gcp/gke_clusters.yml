@@ -1,0 +1,5 @@
+---
+gcp_gke_clusters:
+  - gcp_gke_name: dev-cluster
+    gcp_gke_initial_node_count: 2
+    gcp_gke_state: present 
