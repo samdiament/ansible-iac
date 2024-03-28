@@ -18,5 +18,5 @@
   until: __gcp_instance_async_result.finished
   retries: 100
   delay: 3
-  loop: "{{ gcp_instance.results }}"
+  loop: "{{ __gcp_instance.results }}"
   when: item.ansible_job_id is defined
