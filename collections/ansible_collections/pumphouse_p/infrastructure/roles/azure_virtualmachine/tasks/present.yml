@@ -2,12 +2,12 @@
 - name: Fail if image not found
   ansible.builtin.fail:
     msg: 'Virtual machine image not found, exiting.'
-  when: azure_virtualmachine_os not in azure_images
+  when: item.azure_virtualmachine_os not in azure_images
 
 - name: Fail if virtual machine name is invalid
   ansible.builtin.fail:
     msg: 'Please provide a valid virtual machine name, exiting.'
-  when: azure_virtualmachine_name | length < 1
+  when: item.azure_virtualmachine_name | length < 1
 
 - name: Lookup image properties
   ansible.builtin.set_fact:

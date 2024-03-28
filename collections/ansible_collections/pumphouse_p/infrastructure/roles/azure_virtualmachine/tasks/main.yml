@@ -3,8 +3,10 @@
   ansible.builtin.include_tasks:
     file: present.yml
   when: azure_mode == 'provision'
+  loop: "{{ azure_instances | selectattr('azure_virtualmachine_state', '==', 'present') }}"
       
 - name: Ensure virtual machines are absent
   ansible.builtin.include_tasks:
     file: absent.yml
   when: azure_mode == 'deprovision'
+  loop: "{{ azure_instances | selectattr('azure_virtualmachine_state', '==', 'absent') }}"

@@ -9,4 +9,4 @@ azure_instances:
     azure_virtualmachine_os: rhel_8
     azure_virtualnetwork_name: default
     azure_subnet_name: default
-    azure_virtulamachine_state: present
+    azure_virtualmachine_state: present
