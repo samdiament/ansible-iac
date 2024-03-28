@@ -2,13 +2,10 @@
 - name: Ensure VM is absent
   azure.azcollection.azure_rm_virtualmachine:
     resource_group: "{{ azure_resourcegroup_name }}"
-    name: "{{ item.azure_virtualmachine_name }}"
+    name: "{{ i.azure_virtualmachine_name }}"
     remove_on_absent: "{{ azure_virtualmachine_remove_on_absent }}"
     state: absent
   register: __azure_virtualmachine
-  loop: "{{ item }}"
-  loop_control:
-    loop_var: i
   async: 1000
   poll: 0
   changed_when: __azure_virtualmachine.changed
