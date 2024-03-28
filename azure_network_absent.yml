@@ -11,6 +11,10 @@
       ansible.builtin.include_vars:
         dir: vars/azure
 
+    - name: Deprovision subnets on Azure
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.azure_subnet
+
     - name: Deprovision networks on Azure
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.azure_network

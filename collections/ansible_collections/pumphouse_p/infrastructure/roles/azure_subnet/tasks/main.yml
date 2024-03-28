@@ -1,38 +1,12 @@
 ---
-- name: Ensure subnets are present with desired configuration
-  azure.azcollection.azure_rm_subnet:
-    name: "{{ subnet.name }}"
-    resource_group: "{{ subnet.resource_group | default(azure_resourcegroup_name) }}"
-    virtual_network_name: "{{ subnet.virtual_network_name }}"
-    address_prefixes_cidr: "{{ subnet.address_prefixes_cidr | default(omit) }}"
-    address_prefix_cidr: "{{ subnet.address_prefix_cidr | default(omit) }}"
-    nat_gateway: "{{ subnet.nat_gateway | default(omit) }}"
-    private_endpoint_network_policies: "{{ subnet.private_endpoint_network_policies | default(omit) }}"
-    private_link_service_network_policies: "{{ subnet.private_link_service_network_policies | default(omit) }}"
-    route_table: "{{ subnet.route_table | default(omit) }}"
-    security_group: "{{ subnet.security_group | default(omit) }}"
-    service_endpoints: "{{ subnet.service_endpoints | default(omit) }}"
-    state: present
-  loop: "{{ azure_subnets | selectattr('state', '==', 'present') }}"
-  loop_control:
-    loop_var: subnet
-  register: __present_subnets
-
-- name: Debug output
-  ansible.builtin.debug:
-    var: __present_subnets
+- name: Ensure subnets are present
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: azure_mode == 'provision'
 
 - name: Ensure subnets are absent
-  azure.azcollection.azure_rm_subnet:
-    name: "{{ subnet.name }}"
-    resource_group: "{{ subnet.resource_group | default(azure_resourcegroup_name) }}"
-    virtual_network_name: "{{ subnet.virtual_network_name }}"
-    state: absent
-  loop: "{{ azure_subnets | selectattr('state', '==', 'absent') }}"
-  loop_control:
-    loop_var: subnet
-  register: __absent_subnets
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: azure_mode == 'deprovision'
 
-- name: Debug output
-  ansible.builtin.debug:
-    var: __absent_subnets
+

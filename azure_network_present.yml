@@ -14,3 +14,7 @@
     - name: Provision networks on Azure
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.azure_network
+
+    - name: Provision subnets on Azure
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.azure_subnet

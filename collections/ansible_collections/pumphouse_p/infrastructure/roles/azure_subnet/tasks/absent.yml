@@ -1,0 +1,14 @@
+- name: Ensure subnets are absent
+  azure.azcollection.azure_rm_subnet:
+    name: "{{ subnet.name }}"
+    resource_group: "{{ subnet.resource_group | default(azure_resourcegroup_name) }}"
+    virtual_network_name: "{{ subnet.virtual_network_name }}"
+    state: absent
+  loop: "{{ azure_subnets | selectattr('state', '==', 'absent') }}"
+  loop_control:
+    loop_var: subnet
+  register: __absent_subnets
+
+- name: Debug output
+  ansible.builtin.debug:
+    var: __absent_subnets
