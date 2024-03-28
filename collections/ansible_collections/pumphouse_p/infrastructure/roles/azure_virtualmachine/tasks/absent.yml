@@ -2,7 +2,7 @@
 - name: Ensure VM is absent
   azure.azcollection.azure_rm_virtualmachine:
     resource_group: "{{ azure_resourcegroup_name }}"
-    name: "{{ i.azure_virtualmachine_name }}"
+    name: "{{ item.azure_virtualmachine_name }}"
     remove_on_absent: "{{ azure_virtualmachine_remove_on_absent }}"
     state: absent
   register: __azure_virtualmachine
@@ -12,10 +12,10 @@
 
 - name: Wait for VMs to terminate
   ansible.builtin.async_status:
-    jid: "{{ i.ansible_job_id }}"
+    jid: "{{ item.ansible_job_id }}"
   register: __azure_virtualmachine_async_result
   until: __azure_virtualmachine_async_result.finished
   retries: 100
   delay: 6
   loop: "{{ __azure_virtualmachine.results }}"
-  when: i.ansible_job_id is defined
+  when: item.ansible_job_id is defined
