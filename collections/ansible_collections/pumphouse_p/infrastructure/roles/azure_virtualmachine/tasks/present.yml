@@ -27,33 +27,11 @@
     selected_ssh: "{{ azure_virtualmachine_ssh_public_keys }}"
   when: selected_image.os_type == 'linux'
 
-- name: Sanitize survey inputs (tags)
-  ansible.builtin.set_fact:
-    azure_virtualmachine_user_tags: "{{ azure_virtualmachine_user_tags_survey | from_yaml | combine(azure_virtualmachine_tags) }}"
-  when: azure_virtualmachine_user_tags_survey | length > 0
-
-- name: Sanitize survey inputs (ports)
-  ansible.builtin.set_fact:
-    azure_virtualmachine_open_ports: "{{ azure_virtualmachine_open_ports_survey.split('\n') }} + {{ azure_virtualmachine_open_ports }}"
-  when: azure_virtualmachine_open_ports_survey | length > 0
-
-- name: Debug inputs
-  ansible.builtin.debug:
-    var: "{{ item }}"
-  loop:
-    - azure_virtualmachine_user_tags
-    - azure_virtualmachine_open_ports
-
-- name: Merge user supplied tags with defaults from role
-  ansible.builtin.set_fact:
-    azure_virtualmachine_tags: "{{ azure_virtualmachine_user_tags | combine(azure_virtualmachine_tags) }}"
-  when: azure_virtualmachine_user_tags is defined
-
 - name: Create virtual machine
   azure.azcollection.azure_rm_virtualmachine:
     resource_group: "{{ azure_resourcegroup_name }}"
-    name: "{{ '%s-%02d' | format(azure_virtualmachine_name, item) }}"
-    admin_username: "{{ azure_virtualmachine_admin_username }}"
+    name: "{{ '%s-%02d' | format(item.azure_virtualmachine_name, item) }}"
+    admin_username: "{{ item.azure_virtualmachine_admin_username | default(azure_virtualmachine_admin_username) }}"
     admin_password: "{{ azure_virtualmachine_admin_password }}"
     vm_size: "{{ azure_virtualmachine_size }}"
     priority: "{{ azure_virtualmachine_priority | default(omit) }}"
@@ -77,7 +55,7 @@
     storage_account_name: "{{ azure_virtualmachine_storageaccount_name | default(omit) }}"
     winrm: "{{ azure_virtualmachine_winrm | default(omit) }}"
   register: __azure_virtualmachine
-  loop: "{{ azure_instances | selectattr('azure_virtualmachine_state', '==', 'present') }}"
+  loop: "{{ item.azure_virtualmachine_count | default(azure_virtualmachine_count) }}"
   async: 1000
   poll: 0
   changed_when: not __azure_virtualmachine.changed
