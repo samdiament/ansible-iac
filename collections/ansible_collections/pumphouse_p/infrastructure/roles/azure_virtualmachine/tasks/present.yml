@@ -36,7 +36,7 @@
     vm_size: "{{ item.azure_virtualmachine_size | default(azure_virtualmachine_size) }}"
     priority: "{{ item.azure_virtualmachine_priority | default(omit) }}"
     eviction_policy: "{{ item.azure_virtualmachine_eviction_policy | default(omit) }}"
-    tags: "{{ item.azure_virtualmachine_tags | combine(azure_resource_tags) }}"
+    tags: "{{ (item.azure_virtualmachine_tags | default(omit)) | combine(azure_resource_tags) }}"
     virtual_network_name: "{{ item.azure_virtualnetwork_name | default(omit) }}"
     subnet_name: "{{ item.azure_subnet_name | default(omit) }}"
     os_type: "{{ selected_image.os_type | capitalize }}"
