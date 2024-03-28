@@ -5,7 +5,7 @@
     auto_create_subnetworks: "{{ item.gcp_network_auto_create_subnetworks | default(gcp_network_auto_create_subnetworks) }}"
     description: "{{ item.gcp_network_description | default(omit) }}"
     mtu: "{{ item.gcp_network_mtu | default(omit) }}"
-    project: "{{ item.gcp_project | default(omit) }}"
+    project: "{{ item.gcp_project | default(gcp_project) }}"
     routing_config:
       routing_mode: "{{ item.gcp_network_routing_mode | default(gcp_network_routing_mode) }}"
     state: present
