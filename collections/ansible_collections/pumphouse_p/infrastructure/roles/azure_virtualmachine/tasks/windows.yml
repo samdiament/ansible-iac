@@ -1,0 +1,26 @@
+---
+- name: Enable WinRM HTTPS listener
+  azure.azcollection.azure_rm_virtualmachineextension:
+    name: enable-winrm-listener
+    resource_group: "{{ azure_resourcegroup_name }}"
+    virtual_machine_name: "{{ '%s-%02d' | format(azure_virtualmachine_name, item) }}"
+    publisher: Microsoft.Compute
+    virtual_machine_extension_type: CustomScriptExtension
+    type_handler_version: '1.9'
+    settings: '{"commandToExecute": "powershell.exe -ExecutionPolicy ByPass -EncodedCommand {{ azure_virtualmachine_winrm_script }}"}'
+    auto_upgrade_minor_version: true
+  loop: "{{ range(0, (azure_virtualmachine_count | int)) }}"
+  register: __azure_virtualmachine_winrm_listener
+  async: 1000
+  poll: 0
+  changed_when: not __azure_virtualmachine_winrm_listener.changed
+
+- name: Wait for WinRM listeners
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __azure_virtualmachine_winrm_listener_result
+  until: __azure_virtualmachine_winrm_listener_result.finished
+  retries: 100
+  delay: 6
+  loop: "{{ __azure_virtualmachine_winrm_listener.results }}"
+  when: item.ansible_job_id is defined

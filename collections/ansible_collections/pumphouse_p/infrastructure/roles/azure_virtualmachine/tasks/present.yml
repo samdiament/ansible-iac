@@ -1,0 +1,115 @@
+---
+- name: Fail if image not found
+  ansible.builtin.fail:
+    msg: 'Virtual machine image not found, exiting.'
+  when: azure_virtualmachine_os not in azure_images
+
+- name: Fail if virtual machine name is invalid
+  ansible.builtin.fail:
+    msg: 'Please provide a valid virtual machine name, exiting.'
+  when: azure_virtualmachine_name | length < 1
+
+- name: Lookup image properties
+  ansible.builtin.set_fact:
+    selected_image: "{{ azure_images[azure_virtualmachine_os] }}"
+  when: azure_virtualmachine_os in azure_images
+
+- name: Debug image properties
+  ansible.builtin.debug:
+    var: selected_image
+
+- name: Load variables based off type of operating system
+  ansible.builtin.include_vars:
+    file: "{{ selected_image.os_type }}.yml"
+
+- name: Set SSH key fact for Linux based systems
+  ansible.builtin.set_fact:
+    selected_ssh: "{{ azure_virtualmachine_ssh_public_keys }}"
+  when: selected_image.os_type == 'linux'
+
+- name: Sanitize survey inputs (tags)
+  ansible.builtin.set_fact:
+    azure_virtualmachine_user_tags: "{{ azure_virtualmachine_user_tags_survey | from_yaml | combine(azure_virtualmachine_tags) }}"
+  when: azure_virtualmachine_user_tags_survey | length > 0
+
+- name: Sanitize survey inputs (ports)
+  ansible.builtin.set_fact:
+    azure_virtualmachine_open_ports: "{{ azure_virtualmachine_open_ports_survey.split('\n') }} + {{ azure_virtualmachine_open_ports }}"
+  when: azure_virtualmachine_open_ports_survey | length > 0
+
+- name: Debug inputs
+  ansible.builtin.debug:
+    var: "{{ item }}"
+  loop:
+    - azure_virtualmachine_user_tags
+    - azure_virtualmachine_open_ports
+
+- name: Merge user supplied tags with defaults from role
+  ansible.builtin.set_fact:
+    azure_virtualmachine_tags: "{{ azure_virtualmachine_user_tags | combine(azure_virtualmachine_tags) }}"
+  when: azure_virtualmachine_user_tags is defined
+
+- name: Create virtual machine
+  azure.azcollection.azure_rm_virtualmachine:
+    resource_group: "{{ azure_resourcegroup_name }}"
+    name: "{{ '%s-%02d' | format(azure_virtualmachine_name, item) }}"
+    admin_username: "{{ azure_virtualmachine_admin_username }}"
+    admin_password: "{{ azure_virtualmachine_admin_password }}"
+    vm_size: "{{ azure_virtualmachine_size }}"
+    priority: "{{ azure_virtualmachine_priority | default(omit) }}"
+    eviction_policy: "{{ azure_virtualmachine_eviction_policy | default(omit) }}"
+    tags: "{{ azure_virtualmachine_tags | combine(azure_resource_tags) }}"
+    virtual_network_name: "{{ azure_virtualnetwork_name | default(omit) }}"
+    subnet_name: "{{ azure_subnet_name | default(omit) }}"
+    os_type: "{{ selected_image.os_type | capitalize }}"
+    os_disk_name: "{{ azure_virtualmachine_os_disk_name | default(omit) }}"
+    os_disk_size_gb: "{{ azure_virtualmachine_os_disk_size_gb | default(omit) }}"
+    public_ip_allocation_method: "{{ azure_virtualmachine_public_ip_allocation_method | default(omit) }}"
+    state: present
+    image:
+      offer: "{{ selected_image.offer }}"
+      publisher: "{{ selected_image.publisher }}"
+      sku: "{{ selected_image.sku }}"
+      version: "{{ selected_image.version }}"
+    open_ports: "{{ azure_virtualmachine_open_ports | default(omit) }}"
+    ssh_password_enabled: "{{ azure_virtualmachine_ssh_password_enabled | default(omit) }}"
+    ssh_public_keys: "{{ selected_ssh | default(omit) }}"
+    storage_account_name: "{{ azure_virtualmachine_storageaccount_name | default(omit) }}"
+    winrm: "{{ azure_virtualmachine_winrm | default(omit) }}"
+  register: __azure_virtualmachine
+  loop: "{{ azure_instances | selectattr('azure_virtualmachine_state', '==', 'present') }}"
+  async: 1000
+  poll: 0
+  changed_when: not __azure_virtualmachine.changed
+
+- name: Wait for VMs to finish provisioning
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __azure_virtualmachine_async_result
+  until: __azure_virtualmachine_async_result.finished
+  retries: 100
+  delay: 6
+  loop: "{{ __azure_virtualmachine.results }}"
+  when: item.ansible_job_id is defined
+
+- name: Add virtual machine extension for Windows based virtual machines
+  ansible.builtin.include_tasks:
+    file: windows.yml
+  when: selected_image.os_type == 'windows'
+
+# - name: Debug virtual machine properties
+#   ansible.builtin.debug:
+#     var: __azure_virtualmachine
+
+# - name: Set fact with virtual machine public ip address
+#   ansible.builtin.set_fact:
+#     __azure_virtualmachine_public_ip: "{{ __azure_virtualmachine.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+
+# - name: Set stat with virtual machine public ip address
+#   ansible.builtin.set_stats:
+#     data:
+#       __azure_virtualmachine_public_ip: "{{ __azure_virtualmachine_public_ip }}"
+
+# - name: Output public ip address
+#   ansible.builtin.debug:
+#     var: __azure_virtualmachine_public_ip

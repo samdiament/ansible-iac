@@ -1,0 +1,17 @@
+---
+azure_instances: []
+azure_resourcegroup_name: ""
+azure_resource_state: present
+azure_resource_tags:
+  managed_by: ansible
+
+azure_virtualmachine_name: ""
+azure_virtualmachine_count: 1
+azure_virtualmachine_os: "rhel_8"
+azure_virtualmachine_size: "Standard_B1s"
+azure_virtualmachine_tags:
+  Name: "{{ azure_virtualmachine_name }}"
+azure_virtualmachine_admin_username: "ansibleadmin"
+azure_virtualmachine_admin_password: "r3dh4t1!"
+
+azure_virtualmachine_remove_on_absent: ["all"]

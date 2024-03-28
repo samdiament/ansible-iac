@@ -1,0 +1,8 @@
+---
+azure_virtualmachine_ssh_password_enabled: false
+azure_virtualmachine_ssh_public_keys: []
+azure_virtualmachine_tags:
+  os_type: linux
+
+azure_virtualmachine_open_ports:
+  - "22"

@@ -1,0 +1,12 @@
+---
+azure_instances:
+  - azure_virtualmachine_name: web
+    azure_virtualmachine_os: rhel_9
+    azure_virtualnetwork_name: default
+    azure_subnet_name: default
+    azure_virtualmachine_state: present
+  - azure_virtualmachine_name: frontend
+    azure_virtualmachine_os: rhel_8
+    azure_virtualnetwork_name: default
+    azure_subnet_name: default
+    azure_virtulamachine_state: present

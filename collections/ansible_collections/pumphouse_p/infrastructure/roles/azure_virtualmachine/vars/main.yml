@@ -1,0 +1,64 @@
+---
+ansible_async_dir: /home/runner
+
+azure_images:
+  rhel_7:
+    publisher: 'RedHat'
+    offer: 'RHEL'
+    sku: '7-LVM'
+    version: 'latest'
+    os_type: 'linux'
+  rhel_8:
+    publisher: 'RedHat'
+    offer: 'RHEL'
+    sku: '8-LVM'
+    version: 'latest'
+    os_type: 'linux'
+  rhel_9:
+    publisher: 'RedHat'
+    offer: 'RHEL'
+    sku: '9-lvm'
+    version: 'latest'
+    os_type: 'linux'
+  centos_7:
+    publisher: 'OpenLogic'
+    offer: 'CentOS-LVM'
+    sku: '7-lvm-gen2'
+    version: '7.9.2022020700'
+    os_type: 'linux'
+  centos_8:
+    publisher: 'OpenLogic'
+    offer: 'CentOS-LVM'
+    sku: '8-lvm-gen2'
+    version: '8.5.2022012001'
+    os_type: 'linux'
+  winserver_2022dc:
+    publisher: 'MicrosoftWindowsServer'
+    offer: 'WindowsServer'
+    sku: '2022-datacenter'
+    version: 'latest'
+    os_type: 'windows'
+  winserver_2019dc:
+    publisher: 'MicrosoftWindowsServer'
+    offer: 'WindowsServer'
+    sku: '2019-Datacenter'
+    version: 'latest'
+    os_type: 'windows'
+  winserver_2016dc:
+    publisher: 'MicrosoftWindowsServer'
+    offer: 'WindowsServer'
+    sku: '2016-Datacenter'
+    version: 'latest'
+    os_type: 'windows'
+  win_11:
+    publisher: 'MicrosoftWindowsDesktop'
+    offer: 'windows-11'
+    sku: 'win11-21h2-pro'
+    version: 'latest'
+    os_type: 'windows'
+  win_10:
+    publisher: 'MicrosoftWindowsDesktop'
+    offer: 'Windows-10'
+    sku: 'win10-21h2-pro-g2'
+    version: 'latest'
+    os_type: 'windows'

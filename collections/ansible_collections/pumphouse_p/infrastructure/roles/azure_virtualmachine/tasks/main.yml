@@ -1,0 +1,10 @@
+---
+- name: Ensure virtual machines are present
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: azure_mode == 'provision'
+      
+- name: Ensure virtual machines are absent
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: azure_mode == 'deprovision'
