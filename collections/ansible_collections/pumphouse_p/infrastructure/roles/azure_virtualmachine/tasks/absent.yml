@@ -2,7 +2,7 @@
 - name: Ensure VM is absent
   azure.azcollection.azure_rm_virtualmachine:
     resource_group: "{{ azure_resourcegroup_name }}"
-    name: "{{ '%s-%02d' | format(i.azure_virtualmachine_name) }}"
+    name: "{{ '%s-%02d' | format(item.azure_virtualmachine_name, i) }}"
     remove_on_absent: "{{ azure_virtualmachine_remove_on_absent }}"
     state: absent
   register: __azure_virtualmachine
