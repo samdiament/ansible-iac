@@ -7,7 +7,7 @@
   tasks:
     - name: Load variables
       ansible.builtin.include_vars:
-        dir: vars
+        dir: vars/gcp
       tags:
         - always
 
