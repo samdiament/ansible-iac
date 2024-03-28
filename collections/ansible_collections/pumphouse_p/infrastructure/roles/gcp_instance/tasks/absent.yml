@@ -1,7 +1,22 @@
 ---
 - name: Delete instance
   google.cloud.gcp_compute_instance:
-    name: "{{ gcp_compute_instance_name }}"
-    zone: "{{ gcp_compute_instance_zone | default(gcp_location) }}"
-    project: "{{ gcp_project }}"
+    name: "{{ item.gcp_instance_name }}"
+    zone: "{{ item.gcp_instance_zone | default(gcp_location) }}"
+    project: "{{ item.gcp_project | default(gcp_project) }}"
     state: absent
+  loop: "{{ gcp_instances | selectattr('gcp_instance_state', 'match', 'absent') }}"
+  async: 1000
+  poll: 0
+  register: __gcp_instance
+  changed_when: __gcp_instance.changed
+
+- name: Wait for deprovisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __gcp_instance_async_result
+  until: __gcp_instance_async_result.finished
+  retries: 100
+  delay: 3
+  loop: "{{ gcp_instance.results }}"
+  when: item.ansible_job_id is defined
