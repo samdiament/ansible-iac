@@ -1,0 +1,7 @@
+---
+azure_network_append_tags: true
+azure_network_purge_address_prefixes: false
+azure_network_purge_dns_servers: false
+azure_network_common_tags:
+  created_by: ansible
+  managed_by: ansible

@@ -1,0 +1,16 @@
+---
+- name: Ensure Azure networks are absent
+  hosts: azureclient
+  become: false
+  gather_facts: false
+  vars:
+    azure_mode: deprovision
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars/azure
+
+    - name: Deprovision networks on Azure
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.azure_network

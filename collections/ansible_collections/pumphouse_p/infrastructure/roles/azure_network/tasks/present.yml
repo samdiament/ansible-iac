@@ -1,0 +1,20 @@
+- name: Ensure virtual networks are present with desired configuration
+  azure.azcollection.azure_rm_virtualnetwork:
+    name: "{{ network.name }}"
+    resource_group: "{{ network.resource_group | default(azure_resourcegroup_name) }}"
+    address_prefixes_cidr: "{{ network.address_prefixes_cidr | default(omit) }}"
+    append_tags: "{{ network.append_tags | default(azure_network_append_tags) }}"
+    dns_servers: "{{ network.dns_servers | default(omit) }}"
+    location: "{{ network.location | default(omit) }}"
+    purge_address_prefixes: "{{ network.purge_address_prefixes | default(azure_network_purge_address_prefixes) }}"
+    purge_dns_servers: "{{ network.purge_dns_servers | default(azure_network_purge_dns_servers) }}"
+    tags: "{{ network.tags | default({}) | combine(azure_network_common_tags) }}"
+    state: present
+  loop: "{{ azure_networks | selectattr('state', '==', 'present') }}"
+  loop_control:
+    loop_var: network
+  register: __present_networks
+
+- name: Debug output
+  ansible.builtin.debug:
+    var: __present_networks

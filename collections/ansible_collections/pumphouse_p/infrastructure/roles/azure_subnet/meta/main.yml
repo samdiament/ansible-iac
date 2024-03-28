@@ -1,0 +1,32 @@
+---
+galaxy_info:
+  author: Devin Parrish
+  role_name: azure_subnet
+  namespace: pumphouse_p.infrastructure
+  description: Manages subnets in Microsoft Azure
+
+  license: GPL
+
+  min_ansible_version: 2.9
+
+  galaxy_tags:
+    - network
+    - azure
+    - iaas
+    - subnet
+
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+dependencies: []

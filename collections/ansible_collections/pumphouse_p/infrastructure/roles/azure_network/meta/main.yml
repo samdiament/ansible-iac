@@ -1,0 +1,31 @@
+---
+galaxy_info:
+  author: Devin Parrish
+  role_name: azure_network
+  namespace: pumphouse_p.infrastructure
+  description: Manages virtual networks on Microsoft Azure
+
+  license: GPL
+
+  min_ansible_version: 2.9
+
+  galaxy_tags:
+    - network
+    - azure
+    - iaas
+
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+dependencies: []

@@ -1,0 +1,3 @@
+azure_networks:
+  - name: default
+    state: present

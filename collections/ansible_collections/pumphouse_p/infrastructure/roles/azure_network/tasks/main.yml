@@ -1,0 +1,11 @@
+---
+- name: Ensure virtual networks are present
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: azure_mode == 'provision'
+
+- name: Ensure virtual networks are absent
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: azure_mode == 'absent'
+

@@ -1,0 +1,13 @@
+- name: Ensure virtual networks are absent
+  azure.azcollection.azure_rm_virtualnetwork:
+    name: "{{ network.name }}"
+    resource_group: "{{ network.resource_group | default(azure_resourcegroup_name) }}"
+    state: absent
+  loop: "{{ azure_networks | selectattr('state', '==', 'absent') }}"
+  loop_control:
+    loop_var: network
+  register: __absent_networks
+
+- name: Debug output
+  ansible.builtin.debug:
+    var: __absent_networks

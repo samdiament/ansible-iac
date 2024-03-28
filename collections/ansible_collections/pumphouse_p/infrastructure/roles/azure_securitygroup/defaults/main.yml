@@ -1,0 +1,4 @@
+---
+azure_securitygroup_append_tags: true
+azure_securitygroup_purge_default_rules: false
+azure_securitygroup_purge_rules: false
