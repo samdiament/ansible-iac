@@ -2,9 +2,9 @@
 - name: Ensure instances are present
   ansible.builtin.include_tasks:
     file: present.yml
-  when: gcp_compute_instance_state == 'present'
+  when: gcp_compute_instance_state == 'provision'
 
 - name: Ensure instances are absent
   ansible.builtin.include_tasks:
     file: absent.yml
-  when: gcp_compute_instance_state == 'absent'
+  when: gcp_compute_instance_state == 'deprovision'

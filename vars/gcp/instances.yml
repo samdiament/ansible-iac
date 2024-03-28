@@ -1,0 +1,5 @@
+---
+gcp_compute_instances:
+  - gcp_instance_name: web
+    gcp_instance_state: present
+    gcp_instance_machine_type: e2-micro

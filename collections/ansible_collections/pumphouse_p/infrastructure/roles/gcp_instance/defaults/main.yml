@@ -1,22 +1,23 @@
 ---
-gcp_compute_instance_name: my-instance
-gcp_compute_instance_machine_type: e2-micro
-gcp_compute_instance_disks:
+gcp_instances: []
+gcp_instance_name: my-instance
+gcp_instance_machine_type: e2-micro
+gcp_instance_disks:
   - auto_delete: true
     boot: true
     initialize_params:
       disk_size_gb: 20
       source_image: projects/rhel-byos-cloud/global/images/rhel-9-byos-v20240312
-gcp_compute_instance_metadata: {}
-gcp_compute_instance_labels:
+gcp_instance_metadata: {}
+gcp_instance_labels:
   managed_by: ansible
-gcp_compute_instance_deletion_protection: false
-gcp_compute_instance_tags:
+gcp_instance_deletion_protection: false
+gcp_instance_tags:
   items:
     - ssh
     - http
     - https
-gcp_compute_instance_network_interfaces:
+gcp_instance_network_interfaces:
   - access_configs:
       - name: External NAT
         type: ONE_TO_ONE_NAT

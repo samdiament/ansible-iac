@@ -1,0 +1,19 @@
+---
+- name: Create and configure instance
+  google.cloud.gcp_compute_instance:
+    name: "{{ item.gcp_instance_name }}"
+    zone: "{{ item.gcp_instance_zone | default(gcp_location) }}"
+    project: "{{ item.gcp_project | default(gcp_project) }}"
+    state: present
+    machine_type: "{{ item.gcp_instance_machine_type | default(gcp_instance_machine_type) }}"
+    disks: "{{ item.gcp_instance_disks | default(gcp_instance_disks) }}"
+    network_interfaces: "{{ item.gcp_instance_network_interfaces | default(gcp_instance_network_interfaces) }}"
+    metadata: "{{ item.gcp_instance_metadata | default(gcp_instance_metadata) }}"
+    labels: "{{ item.gcp_instance_labels | default(gcp_instance_labels) }}"
+    deletion_protection: "{{ item.gcp_instance_deletion_protection | default(gcp_instance_deletion_protection) }}"
+    tags: "{{ item.gcp_instance_tags | default(gcp_instance_deletion_protection) }}"
+  loop: "{{ gcp_instances }}"
+  async: 1000
+  poll: 0
+  register: __gcp_instance
+  
