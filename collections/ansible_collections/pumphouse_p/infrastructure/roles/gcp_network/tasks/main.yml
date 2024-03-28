@@ -2,9 +2,9 @@
 - name: Ensure network is present with desired configuration
   ansible.builtin.include_tasks:
     file: present.yml
-  when: gcp_network_mode == 'provision'
+  when: gcp_mode == 'provision'
 
 - name: Ensure network is absent
   ansible.builtin.include_tasks:
     file: absent.yml
-  when: gcp_network_mode == 'deprovision'
+  when: gcp_mode == 'deprovision'

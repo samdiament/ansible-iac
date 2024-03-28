@@ -3,6 +3,8 @@
   hosts: gcpclient
   become: false
   gather_facts: false
+  vars:
+    gcp_mode: provision
 
   tasks:
     - name: Load variables
@@ -14,11 +16,7 @@
     - name: Ensure networks are present
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.gcp_network
-      vars:
-        gcp_network_mode: provision
 
     - name: Ensure firewalls are present
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.gcp_firewall
-      vars:
-        gcp_network_mode: provision

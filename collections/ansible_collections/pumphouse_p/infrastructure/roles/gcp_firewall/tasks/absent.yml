@@ -1,6 +1,21 @@
 ---
 - name: Ensure firewall is absent
   google.cloud.gcp_compute_firewall:
-    name: "{{ gcp_firewall_name }}"
-    project: "{{ gcp_project }}"
+    name: "{{ item.gcp_firewall_name }}"
+    project: "{{ item.gcp_project | default(gcp_project) }}"
     state: absent
+  loop: "{{ gcp_firewalls | selectattr('gcp_firewall_state', 'match', 'absent') }}"
+  async: 1000
+  poll: 0
+  register: __gcp_fw
+  changed_when: __gcp_fw.changed
+
+- name: Wait for deprovisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __gcp_fw_async_result
+  until: __gcp_fw_async_result.finished
+  retries: 100
+  delay: 3
+  loop: "{{ __gcp_fw.results }}"
+  when: item.ansible_job_id is defined

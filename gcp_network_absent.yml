@@ -3,6 +3,8 @@
   hosts: gcpclient
   become: false
   gather_facts: false
+  vars:
+    gcp_mode: deprovision
 
   tasks:
     - name: Load variables
@@ -12,11 +14,7 @@
     - name: Ensure firewalls are absent
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.gcp_firewall
-      vars:
-        gcp_network_mode: deprovision
 
     - name: Ensure networks are absent
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.gcp_network
-      vars:
-        gcp_network_mode: deprovision

@@ -2,9 +2,9 @@
 - name: Ensure firewall exists with desired configuration
   ansible.builtin.include_tasks:
     file: present.yml
-  when: gcp_firewall_state == 'present'
+  when: gcp_mode == 'provision'
 
 - name: Ensure firewall is absent
   ansible.builtin.include_tasks:
     file: absent.yml
-  when: gcp_firewall_state == 'absent'
+  when: gcp_mode == 'deprovision'

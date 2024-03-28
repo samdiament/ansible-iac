@@ -1,10 +1,25 @@
 ---
 - name: Ensure firewall is present with desired configuration
   google.cloud.gcp_compute_firewall:
-    name: "{{ gcp_firewall_name }}"
-    allowed: "{{ gcp_firewall_allowed | default(omit) }}"
-    target_tags: "{{ gcp_firewall_target_tags | default(omit) }}"
-    source_tags: "{{ gcp_firewall_source_tags | default(omit) }}"
-    source_ranges: "{{ gcp_firewall_source_ranges | default(omit) }}"
-    project: "{{ gcp_project }}"
+    name: "{{ item.gcp_firewall_name }}"
+    allowed: "{{ item.gcp_firewall_allowed | default(gcp_firewall_allowed) }}"
+    target_tags: "{{ item.gcp_firewall_target_tags | default(gcp_firewall_target_tags) }}"
+    source_tags: "{{ item.gcp_firewall_source_tags | default(omit) }}"
+    source_ranges: "{{ item.gcp_firewall_source_ranges | default(gcp_firewall_source_ranges) }}"
+    project: "{{ item.gcp_project | default(gcp_project) }}"
     state: present
+  loop: "{{ gcp_firewalls | selectattr('gcp_firewall_state', 'match', 'present') }}"
+  async: 1000
+  poll: 0
+  register: __gcp_fw
+  changed_when: __gcp_fw.changed
+
+- name: Wait for provisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __gcp_fw_async_result
+  until: __gcp_fw_async_result.finished
+  retries: 100
+  delay: 3
+  loop: "{{ __gcp_fw.results }}"
+  when: item.ansible_job_id is defined
