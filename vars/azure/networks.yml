@@ -9,7 +9,7 @@ azure_subnets:
     virtual_network_name: default
     address_prefix_cidr: 10.254.1.0/24
 
-azure_firewalls:
+azure_securitygroups:
   - name: default
     state: present
     purge_rules: true
