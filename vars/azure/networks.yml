@@ -1,4 +1,4 @@
 azure_networks:
   - name: default
-    state: present
+    state: absent
     address_prefixes_cidr: 10.254.0.0/16
