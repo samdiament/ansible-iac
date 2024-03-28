@@ -64,13 +64,15 @@
 
 - name: Wait for VMs to finish provisioning
   ansible.builtin.async_status:
-    jid: "{{ item.ansible_job_id }}"
+    jid: "{{ i.ansible_job_id }}"
   register: __azure_virtualmachine_async_result
   until: __azure_virtualmachine_async_result.finished
   retries: 100
   delay: 6
   loop: "{{ __azure_virtualmachine.results }}"
-  when: item.ansible_job_id is defined
+  loop_control:
+    loop_var: i
+  when: i.ansible_job_id is defined
 
 - name: Add virtual machine extension for Windows based virtual machines
   ansible.builtin.include_tasks:
