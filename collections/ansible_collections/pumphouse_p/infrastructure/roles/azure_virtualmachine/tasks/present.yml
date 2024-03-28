@@ -55,7 +55,7 @@
     storage_account_name: "{{ azure_virtualmachine_storageaccount_name | default(omit) }}"
     winrm: "{{ azure_virtualmachine_winrm | default(omit) }}"
   register: __azure_virtualmachine
-  loop: "{{ range(0, (item.azure_virtualmachine_count | default(azure_virtualmachine_count)) }}"
+  loop: "{{ range(0, (item.azure_virtualmachine_count | default(azure_virtualmachine_count))) }}"
   async: 1000
   poll: 0
   changed_when: not __azure_virtualmachine.changed
