@@ -15,10 +15,10 @@
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.azure_network
 
-    - name: Provision subnets on Azure
-      ansible.builtin.include_role:
-        name: pumphouse_p.infrastructure.azure_subnet
-
     - name: Provision security groups on Azure
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.azure_securitygroup
+
+    - name: Provision subnets on Azure
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.azure_subnet

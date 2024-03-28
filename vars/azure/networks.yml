@@ -8,6 +8,7 @@ azure_subnets:
     state: present
     virtual_network_name: default
     address_prefix_cidr: 10.254.1.0/24
+    security_group: default
 
 azure_securitygroups:
   - name: default
