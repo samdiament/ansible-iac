@@ -18,4 +18,4 @@
     purge_rules_egress: "{{ item.aws_secgroup_purge_egress | default(aws_secgroup_purge_egress) }}"
     rules: "{{ item.aws_secgroup_ingress_rules | default(aws_secgroup_ingress_rules) }}"
     rules_egress: "{{ item.aws_secgroup_egress_rules | default(aws_secgroup_egress_rules) }}"
-    tags: "{{ (item.aws_secgroup_user_tags | default(omit)) | combine(aws_secgroup_resource_tags) }}"
+    tags: "{{ (item.aws_secgroup_user_tags | default(aws_secgroup_user_tags)) | combine(aws_secgroup_resource_tags) }}"
