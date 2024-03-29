@@ -1,0 +1,5 @@
+---
+aws_secgroup_resource_tags:
+  managed_by: ansible
+  created_by: ansible
+  Name: "{{ aws_secgroup_name }}"
