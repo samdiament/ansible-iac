@@ -2,18 +2,19 @@
 aws_networks:
   - aws_net_name: default
     aws_net_cidr_block: 10.254.0.0/16
-    aws_net_state: absent
+    aws_net_state: present
 
 aws_subnets:
   - aws_subnet_name: default
     aws_subnet_vpc_name: default
     aws_subnet_cidr: 10.254.0.0/24
     aws_subnet_map_public: true
-    aws_subnet_state: absent
+    aws_subnet_state: present
 
 aws_security_groups:
   - aws_secgroup_name: ssh
     aws_secgroup_vpc_name: default
+    aws_secgroup_state: present
     description: Security group to allow inbound ssh access
     rules:
       - proto: tcp

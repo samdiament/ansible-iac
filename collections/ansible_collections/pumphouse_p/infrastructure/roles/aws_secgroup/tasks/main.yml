@@ -3,10 +3,10 @@
   ansible.builtin.include_tasks:
     file: present.yml
   when: aws_mode == 'provision'
-  loop: "{{ aws_security_groups | selectattr('state', '==', 'present') }}"
+  loop: "{{ aws_security_groups | selectattr('aws_secgroup_state', '==', 'present') }}"
 
 - name: Ensure security group is absent
   ansible.builtin.include_tasks:
     file: absent.yml
   when: aws_mode == 'deprovision'
-  loop: "{{ aws_security_groups | selectattr('state', '==', 'absent') }}"
+  loop: "{{ aws_security_groups | selectattr('aws_secgroup_state', '==', 'absent') }}"
