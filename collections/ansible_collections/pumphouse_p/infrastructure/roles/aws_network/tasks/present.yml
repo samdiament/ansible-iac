@@ -6,7 +6,7 @@
     dns_hostnames: "{{ item.aws_net_dns_hostnames | default(aws_net_dns_hostnames) }}"
     dns_support: "{{ item.aws_net_dns_support | default(aws_net_dns_support) }}"
     purge_cidrs: "{{ item.aws_net_purge_cidrs | default(aws_net_purge_cidrs) }}"
-    ipv6_cidr: "{{ item.aws_net_ipv6_cidr | default(aws_net_ipv6_cidr ) }}"
+    ipv6_cidr: "{{ item.aws_net_ipv6_cidr | default(omit) }}"
     multi_ok: "{{ item.aws_net_multi_ok | default(omit) }}"
     state: present
     region: "{{ item.aws_region | default(aws_region) }}"
@@ -19,7 +19,7 @@
 
 - name: Wait for provisioning to complete
   ansible.builtin.async_status:
-    jid: "{{ item.ansible_job_id}}"
+    jid: "{{ item.ansible_job_id }}"
   register: __aws_net_async_result
   until: __aws_net_async_result.finished
   retries: 100
