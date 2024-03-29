@@ -18,3 +18,7 @@
     - name: Provision subnets on AWS
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.aws_subnet
+
+    - name: Provision security groups on AWS
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.aws_securitygroup

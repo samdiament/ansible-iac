@@ -1,0 +1,21 @@
+---
+- name: Grab the VPC ID
+  amazon.aws.ec2_vpc_net_info:
+    filters:
+      "tag:Name": "{{ item.aws_secgroup_vpc_name }}"
+    region: "{{ item.aws_region | default(aws_region) }}"
+  register: __aws_net 
+
+- name: Ensure security group exists with desired configuration
+  amazon.aws.ec2_security_group:
+    region: "{{ item.aws_region | default(aws_region) }}"
+    state: present
+    name: "{{ item.aws_secgroup_name }}"
+    vpc_id: "{{ __aws_net.vpcs.0.id }}"
+    description: "{{ item.aws_secgroup_description }}"
+    purge_tags: "{{ item.aws_secgroup_purge_tags }}"
+    purge_rules: "{{ item.aws_secgroup_purge_ingress }}"
+    purge_rules_egress: "{{ item.aws_secgroup_purge_egress }}"
+    rules: "{{ item.aws_secgroup_ingress_rules }}"
+    rules_egress: "{{ item.aws_secgroup_egress_rules }}"
+    tags: "{{ (item.aws_secgroup_user_tags | default(omit)) | combine(aws_secgroup_resource_tags) }}"

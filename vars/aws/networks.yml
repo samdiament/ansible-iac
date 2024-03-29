@@ -10,3 +10,13 @@ aws_subnets:
     aws_subnet_cidr: 10.254.0.0/24
     aws_subnet_map_public: true
     aws_subnet_state: absent
+
+aws_security_groups:
+  - aws_secgroup_name: ssh
+    aws_secgroup_vpc_name: default
+    description: Security group to allow inbound ssh access
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0

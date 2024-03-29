@@ -11,6 +11,10 @@
       ansible.builtin.include_vars:
         dir: vars/aws
 
+    - name: Provision security groups on AWS
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.aws_securitygroup
+
     - name: Deprovision subnets on AWS
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.aws_subnet

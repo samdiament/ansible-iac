@@ -1,0 +1,12 @@
+---
+# Method of operation - can be one of present or absent.
+aws_security_groups: []
+aws_region: ""
+
+
+aws_secgroup_purge_tags: true
+aws_secgroup_purge_ingress: true
+aws_secgroup_purge_egress: true
+aws_secgroup_ingress_rules: []
+aws_secgroup_egress_rules: []
+aws_secgroup_user_tags: {}
