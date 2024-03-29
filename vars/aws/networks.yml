@@ -16,7 +16,7 @@ aws_security_groups:
     aws_secgroup_vpc_name: default
     aws_secgroup_state: present
     aws_secgroup_description: Security group to allow inbound ssh access
-    aws_secgroup_rules:
+    aws_secgroup_ingress_rules:
       - proto: tcp
         from_port: 22
         to_port: 22
