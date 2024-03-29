@@ -1,0 +1,12 @@
+---
+# Method of operation - can be one of present or absent.
+aws_mode: ""
+aws_region: ""
+
+aws_net_name: ""
+aws_net_cidr_block: "172.16.0.0/16"
+aws_net_dns_hostnames: true
+aws_net_dns_support: true
+aws_net_purge_cidrs: true
+aws_net_ipv6_cidr: false
+aws_net_user_tags: {}

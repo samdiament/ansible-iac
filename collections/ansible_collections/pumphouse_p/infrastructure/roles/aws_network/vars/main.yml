@@ -1,0 +1,5 @@
+---
+aws_net_resource_tags:
+  managed_by: ansible
+  created_by: ansible
+  Name: "{{ item.aws_net_name }}"

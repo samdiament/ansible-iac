@@ -1,0 +1,21 @@
+---
+- name: Ensure VPC is absent
+  amazon.aws.ec2_vpc_net:
+    name: "{{ item.aws_net_name }}"
+    state: absent
+    region: "{{ item.aws_region | default(aws_region) }}"
+  loop: "{{ aws_networks | selectattr('aws_net_state', '==', 'absent') }}"
+  async: 1000
+  poll: 0
+  register: __aws_net
+  changed_when: __aws_net.changed
+
+- name: Wait for deprovisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __aws_net_async_result
+  until: __aws_net_async_result.finished
+  retries: 100
+  delay: 3
+  loop: "{{ __aws_net.results }}"
+  when: item.ansible_job_id is defined

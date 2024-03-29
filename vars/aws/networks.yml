@@ -1,0 +1,5 @@
+---
+aws_networks:
+  - aws_net_name: default
+    aws_net_cidr_block: 10.254.0.0/16
+    aws_net_state: present
