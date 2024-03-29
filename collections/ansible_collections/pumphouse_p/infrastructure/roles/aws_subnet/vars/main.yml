@@ -2,4 +2,4 @@
 aws_subnet_resource_tags:
   managed_by: ansible
   created_by: ansible
-  Name: "{{ aws_subnet_name }}"
+  Name: "{{ item.aws_subnet_name }}"

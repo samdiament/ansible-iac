@@ -6,14 +6,14 @@
     region: "{{ item.aws_region | default(aws_region) }}"
   register: __aws_net
 
-- name: Ensure subnet is absent
+- name: Ensure subnet is present
   amazon.aws.ec2_vpc_subnet:
     cidr: "{{ item.aws_subnet_cidr }}"
     assign_instances_ipv6: "{{ item.aws_subnet_assign_instances_ipv6 | default(omit) }}"
     az: "{{ item.aws_subnet_az | default(omit) }}"
     ipv6_cidr: "{{ item.aws_subnet_ipv6_cidr | default(omit) }}"
-    map_public: "{{ item.aws_subnet_map_public }}"
-    purge_tags: "{{ item.aws_subnet_purge_tags }}"
+    map_public: "{{ item.aws_subnet_map_public | default(aws_subnet_map_public) }}"
+    purge_tags: "{{ item.aws_subnet_purge_tags | default(aws_subnet_purge_tags) }}"
     region: "{{ item.aws_region | default(aws_region) }}"
     state: present
     tags: "{{ item.aws_subnet_user_tags | combine(aws_subnet_resource_tags) }}"
