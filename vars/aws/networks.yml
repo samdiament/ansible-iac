@@ -9,3 +9,4 @@ aws_subnets:
     aws_subnet_vpc_name: default
     aws_subnet_cidr: 10.254.0.0/24
     aws_subnet_map_public: true
+    aws_subnet_state: present
