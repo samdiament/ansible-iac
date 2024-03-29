@@ -16,7 +16,7 @@
     purge_tags: "{{ item.aws_subnet_purge_tags | default(aws_subnet_purge_tags) }}"
     region: "{{ item.aws_region | default(aws_region) }}"
     state: present
-    tags: "{{ item.aws_subnet_user_tags | combine(aws_subnet_resource_tags) }}"
+    tags: "{{ (item.aws_subnet_user_tags | default(aws_subnet_user_tags)) | combine(aws_subnet_resource_tags) }}"
     wait: "{{ item.aws_subnet_wait | default(omit) }}"
     wait_timeout: "{{ item.aws_subnet_wait_timeout | default(omit) }}"
     vpc_id: "{{ __aws_net.vpcs.0.id }}"
