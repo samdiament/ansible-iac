@@ -1,0 +1,15 @@
+---
+- name: Grab the VPC ID
+  amazon.aws.ec2_vpc_net_info:
+    filters:
+      "tag:Name": "{{ item.aws_subnet_vpc_name }}"
+    region: "{{ item.aws_region | default(aws_region) }}"
+  register: __aws_net
+
+- name: Ensure subnet is absent
+  amazon.aws.ec2_vpc_subnet:
+    cidr: "{{ item.aws_subnet_cidr }}"
+    ipv6_cidr: "{{ item.aws_subnet_ipv6_cidr | default(omit) }}"
+    vpc_id: "{{ __aws_net.vpcs.0.id }}"
+    state: absent
+    region: "{{ item.aws_region | default(aws_region) }}"
