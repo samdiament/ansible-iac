@@ -1,0 +1,23 @@
+---
+- block:
+    - name: Grab the VPC ID
+      amazon.aws.ec2_vpc_net_info:
+        filters:
+          "tag:Name": "{{ item.aws_subnet_vpc_name }}"
+      register: __aws_net
+
+    - name: Ensure subnet is absent
+      amazon.aws.ec2_vpc_subnet:
+        cidr: "{{ item.aws_subnet_cidr }}"
+        assign_instances_ipv6: "{{ item.aws_subnet_assign_instances_ipv6 | default(omit) }}"
+        az: "{{ item.aws_subnet_az | default(omit) }}"
+        ipv6_cidr: "{{ item.aws_subnet_ipv6_cidr | default(omit) }}"
+        map_public: "{{ item.aws_subnet_map_public }}"
+        purge_tags: "{{ item.aws_subnet_purge_tags }}"
+        region: "{{ item.aws_region | default(aws_region) }}"
+        state: present
+        tags: "{{ item.aws_subnet_user_tags | combine(aws_subnet_resource_tags) }}"
+        wait: "{{ item.aws_subnet_wait | default(omit) }}"
+        wait_timeout: "{{ item.aws_subnet_wait_timeout | default(omit) }}"
+        vpc_id: "{{ __aws_net.vpcs.0.id }}"
+  loop: "{{ aws_subnets | selectattr('aws_subnet_state', '==', 'present') }}"

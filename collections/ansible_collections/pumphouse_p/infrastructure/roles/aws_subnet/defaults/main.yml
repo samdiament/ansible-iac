@@ -1,0 +1,10 @@
+---
+# Method of operation - can be one of present or absent.
+aws_resource_state: present
+aws_region: ""
+
+aws_subnet_cidr: "172.16.0.0/24"
+aws_subnet_map_public: false
+aws_subnet_purge_tags: true
+aws_subnet_user_tags: {}
+aws_subnet_name: ""

@@ -14,3 +14,7 @@
     - name: Provision networks on AWS
       ansible.builtin.include_role:
         name: pumphouse_p.infrastructure.aws_network
+
+    - name: Provision subnets on AWS
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.aws_subnet
