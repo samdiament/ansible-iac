@@ -2,6 +2,7 @@
 - name: Ensure VPC is absent
   amazon.aws.ec2_vpc_net:
     name: "{{ item.aws_net_name }}"
+    cidr_block: "{{ item.aws_net_cidr_block }}"
     state: absent
     region: "{{ item.aws_region | default(aws_region) }}"
   loop: "{{ aws_networks | selectattr('aws_net_state', '==', 'absent') }}"
