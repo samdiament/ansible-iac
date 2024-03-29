@@ -1,0 +1,6 @@
+---
+- name: Ensure keypair is absent
+  amazon.aws.ec2_key:
+    name: "{{ item.aws_keypair_name }}"
+    region: "{{ item.aws_region | default(aws_region) }}"
+    state: absent

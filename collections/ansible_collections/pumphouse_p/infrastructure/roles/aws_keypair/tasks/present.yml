@@ -1,0 +1,10 @@
+---
+- name: Ensure keypair exists with desired configurtation
+  amazon.aws.ec2_key:
+    name: "{{ item.aws_keypair_name }}"
+    region: "{{ item.aws_region | default(aws_region) }}"
+    force: "{{ item.aws_keypair_overwrite | default(aws_keypair_overwrite) }}"
+    key_material: "{{ item.aws_keypair_pubkey | default(omit) }}"
+    purge_tags: "{{ item.aws_keypair_purge_tags | default(aws_keypair_purge_tags) }}"
+    state: present
+    tags: "{{ (item.aws_keypair_user_tags | default(aws_keypair_user_tags)) | combine(aws_keypair_resource_tags) }}"

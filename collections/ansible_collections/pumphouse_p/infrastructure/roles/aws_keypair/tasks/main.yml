@@ -1,0 +1,12 @@
+---
+- name: Ensure keypair is present
+  ansible.builtin.include_tasks:
+    file: present.yml
+  when: aws_mode == 'provision'
+  loop: "{{ aws_keypairs | selectattr('aws_keypair_state', '==', 'present') }}"
+
+- name: Ensure keypair is absent
+  ansible.builtin.include_tasks:
+    file: absent.yml
+  when: aws_mode == 'deprovision'
+  loop: "{{ aws_keypairs | selectattr('aws_keypair_state', '==', 'absent') }}"

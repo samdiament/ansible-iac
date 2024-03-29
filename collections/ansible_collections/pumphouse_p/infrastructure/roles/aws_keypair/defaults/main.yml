@@ -1,0 +1,9 @@
+---
+# Method of operation - can be one of present or absent.
+aws_keypairs: []
+aws_resource_state: present
+aws_region: ""
+
+aws_keypair_overwrite: false
+aws_keypair_purge_tags: true
+aws_keypair_user_tags: {}

@@ -1,0 +1,16 @@
+---
+- name: Ensure AWS keypairs are present
+  hosts: awsclient
+  become: false
+  gather_facts: false
+  vars:
+    aws_mode: provision
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars/aws
+
+    - name: Provision keypairs on AWS
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.aws_keypair

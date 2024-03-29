@@ -1,0 +1,5 @@
+---
+aws_keypair_resource_tags:
+  managed_by: ansible
+  created_by: ansible
+  Name: "{{ item.aws_keypair_name }}"
