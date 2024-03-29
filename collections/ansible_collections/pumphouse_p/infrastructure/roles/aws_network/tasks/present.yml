@@ -3,7 +3,7 @@
   amazon.aws.ec2_vpc_net:
     name: "{{ item.aws_net_name }}"
     cidr_block: "{{ item.aws_net_cidr_block | default(aws_net_cidr_block) }}"
-    dns_hostnames: "{{ item.aws_net_dns_hostnames | default(aws_net_dns_hostname) }}"
+    dns_hostnames: "{{ item.aws_net_dns_hostnames | default(aws_net_dns_hostnames) }}"
     dns_support: "{{ item.aws_net_dns_support | default(aws_net_dns_support) }}"
     purge_cidrs: "{{ item.aws_net_purge_cidrs | default(aws_net_purge_cidrs) }}"
     ipv6_cidr: "{{ item.aws_net_ipv6_cidr | default(aws_net_ipv6_cidr ) }}"
