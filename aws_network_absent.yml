@@ -1,0 +1,16 @@
+---
+- name: Ensure AWS network objects are absent
+  hosts: awsclient
+  become: false
+  gather_facts: false
+  vars:
+    aws_mode: deprovision
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars/aws
+
+    - name: Deprovision networks on AWS
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.aws_network
