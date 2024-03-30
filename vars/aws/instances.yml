@@ -11,7 +11,7 @@ aws_instances:
     aws_instance_os_version: '9'
     aws_instance_state: present
   - aws_instance_name: frontend
-    aws_instance_exact_count: 3
+    aws_instance_exact_count: 1
     aws_instance_type: t2.micro
     aws_instance_key_name: ansibleadmin
     aws_instance_security_groups:
