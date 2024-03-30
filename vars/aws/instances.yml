@@ -9,3 +9,4 @@ aws_instances:
     aws_instance_subnet_name: default
     aws_instance_os_name: rhel
     aws_instance_os_version: 9
+    aws_instance_state: present
