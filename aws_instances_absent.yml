@@ -4,7 +4,7 @@
   become: false
   gather_facts: false
   vars:
-    aws_mode: provision
+    aws_mode: deprovision
 
   tasks:
     - name: Load variables
