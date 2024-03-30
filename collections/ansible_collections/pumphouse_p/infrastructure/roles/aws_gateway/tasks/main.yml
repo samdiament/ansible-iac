@@ -2,11 +2,11 @@
 - name: Ensure gateways are present
   ansible.builtin.include_tasks:
     file: present.yml
-  when: gcp_mode == 'provision'
+  when: aws_mode == 'provision'
   loop: "{{ aws_gateways | selectattr('aws_gateway_state', '==', 'present') }}"
 
 - name: Ensure gateways are absent
   ansible.builtin.include_tasks:
     file: absent.yml
-  when: gcp_mode == 'deprovision'
+  when: aws_mode == 'deprovision'
   loop: "{{ aws_gateways | selectattr('aws_gateway_state', '==', 'absent') }}"
