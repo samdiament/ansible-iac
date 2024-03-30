@@ -2,11 +2,11 @@
 - name: Ensure instance is present
   ansible.builtin.include_tasks:
     file: present.yml
-  when: aws_resource_state == 'provision'
+  when: aws_mode == 'provision'
   loop: "{{ aws_instances | selectattr('aws_instance_state', '==', 'present') }}"
 
 - name: Ensure instance is absent
   ansible.builtin.include_tasks:
     file: absent.yml
-  when: aws_resource_state == 'deprovision'
+  when: aws_mode == 'deprovision'
   loop: "{{ aws_instances | selectattr('aws_instance_state', '==', 'absent') }}"
