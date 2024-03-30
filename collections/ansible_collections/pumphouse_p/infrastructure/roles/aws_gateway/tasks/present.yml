@@ -21,6 +21,7 @@
   amazon.aws.ec2_vpc_igw:
     vpc_id: "{{ __vpc_id }}"
     state: present
+    region: "{{ item.aws_region | default(aws_region) }}"
     tags:
       Name: "{{ item.aws_gateway_name }}"
   when: item.aws_gateway_type == 'igw'

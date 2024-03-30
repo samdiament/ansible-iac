@@ -11,4 +11,5 @@
       amazon.aws.ec2_vpc_igw:
         internet_gateway_id: "{{ __vpc_igws.internet_gateways.0.internet_gateway_id }}"
         state: absent
+        region: "{{ item.aws_region | default(aws_region) }}"
   when: "{{ item.aws_gateway_type == 'igw' }}"
