@@ -1,0 +1,14 @@
+---
+- block:
+    - name: Grab IGW ID
+      amazon.aws.ec2_vpc_igw_info:
+        region: "{{ item.aws_region | default(aws_region) }}" 
+        filters:
+          "tag:Name": "{{ item.aws_gateway_name }}"
+      register: __vpc_igws
+
+    - name: Ensure IGW is absent
+      amazon.aws.ec2_vpc_igw:
+        internet_gateway_id: "{{ __vpc_igws.internet_gateways.0.internet_gateway_id }}"
+        state: absent
+  when: "{{ item.aws_gateway_type == 'igw' }}"
