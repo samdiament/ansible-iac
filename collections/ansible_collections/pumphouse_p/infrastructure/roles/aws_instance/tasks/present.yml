@@ -36,7 +36,7 @@
     msg: No subnet found with a name of {{ item.aws_subnet_name }}
 
 - name: Get the public key for user data injection
-  ansible.builtin.ec2_key_info:
+  amazon.aws.ec2_key_info:
     names:
       - "{{ item.aws_instance_key_name }}"
     region: "{{ item.aws_region | default(aws_region) }}"
