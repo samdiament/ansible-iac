@@ -1,0 +1,23 @@
+---
+# Method of operation - can be one of present or absent.
+aws_resource_state: present
+aws_region: ""
+
+aws_instance_type: t2.micro
+aws_instance_purge_tags: true
+aws_instance_state: running
+aws_instance_user_tags: {}
+aws_instance_tenancy: default
+aws_instance_termination_protection: false
+aws_instance_wait: true
+aws_instance_wait_timeout: 600
+
+aws_instance_user_data: |
+  #!/bin/bash
+  useradd -m -d /home/ansibleadmin -s /bin/bash ansibleadmin
+  mkdir -p /home/ansibleadmin/.ssh
+  echo "{{ __aws_instance_key.keypairs.0.public_key }}" >> /home/ansibleadmin/.ssh/authorized_keys 
+  chown -R ansibleadmin:ansibleadmin /home/ansibleadmin/.ssh
+  chmod 700 /home/ansibleadmin/.ssh
+  chmod 600 /home/ansibleadmin/.ssh/authorized_keys
+  echo 'ansibleadmin ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users

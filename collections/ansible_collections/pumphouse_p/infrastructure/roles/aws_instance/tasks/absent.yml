@@ -1,0 +1,22 @@
+---
+- name: Ensure instance is absent
+  amazon.aws.ec2_instance:
+    region: "{{ item.aws_region | default(aws_region) }}"
+    state: absent
+    filters:
+      tag:Name: "{{ item.aws_instance_name }}"
+  register: __aws_instance
+  loop: "{{ aws_instances | selectattr('aws_instance_state', '==', 'absent') }}"
+  async: 1000
+  poll: 0
+  changed_when: __aws_instance.changed
+
+- name: Wait for VMs to terminate
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __aws_instance_async_result
+  until: __aws_instance_async_result.finished
+  retries: 100
+  delay: 6
+  loop: "{{ __aws_instance.results }}"
+  when: item.ansible_job_id is defined

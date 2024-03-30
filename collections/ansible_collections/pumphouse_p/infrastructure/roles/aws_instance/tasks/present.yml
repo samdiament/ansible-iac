@@ -1,0 +1,104 @@
+---
+- name: Check for supported operating system
+  ansible.builtin.assert:
+    that:
+      - item.aws_instance_os_name == 'rhel' or
+        item.aws_instance_os_name == 'centos'
+    msg: "Unsupported operating system provided"
+
+- name: Set fact with desired image lookup fields
+  ansible.builtin.set_fact:
+    __image_to_lookup: "{{ aws_images[item.aws_instance_os_name][item.aws_instance_os_version] }}"
+  
+- name: Print lookup image details
+  ansible.builtin.debug:
+    var: __image_to_lookup
+
+- name: Lookup desired operating system image
+  ansible.builtin.include_tasks:
+    file: image_lookup_{{ item.aws_instance_os_name }}.yml
+
+- name: Print operating system image details
+  ansible.builtin.debug:
+    var: __aws_instance_os_image_latest
+
+- name: Get subnet ID
+  amazon.aws.ec2_vpc_subnet_info:
+    filters:
+      "tag:Name": "{{ item.aws_instance_subnet_name }}"
+    region: "{{ item.aws_region | default(aws_region) }}"
+  register: __aws_instance_subnet
+
+- name: Assert subnet was found
+  ansible.builtin.assert:
+    that:
+      - (__aws_instance_subnet.subnets | length) > 0
+    msg: No subnet found with a name of {{ item.aws_subnet_name }}
+
+- name: Get the public key for user data injection
+  ansible.builtin.ec2_key_info:
+    names:
+      - "{{ item.aws_instance_key_name }}"
+    region: "{{ item.aws_region | default(aws_region) }}"
+    include_public_key: true
+  register: __aws_instance_key
+
+- name: Assert keypair was found
+  ansible.builtin.assert:
+    that:
+      - (__aws_instance_key.keypairs | length) > 0
+    msg: No keypair found with a name of {{ item.aws_instance_key_name }}
+
+- name: Launch instance
+  amazon.aws.ec2_instance:
+    availability_zone: "{{ item.aws_instance_az | default(omit) }}"
+    count: "{{ item.aws_instance_count | default(omit) }}"
+    exact_count: "{{ item.aws_instance_exact_count | default(omit) }}"
+    image:
+      id: "{{ __aws_instance_os_image_latest.image_id }}"
+    instance_type: "{{ item.aws_instance_type | default(aws_instance_type) }}"
+    key_name: "{{ item.aws_instance_key_name }}"
+    name: "{{ item.aws_instance_name }}"
+    network:
+      assign_public_ip: "{{ item.aws_instance_net_assign_public_ip | bool | default(omit) }}"
+      delete_on_termination: "{{ item.aws_instance_net_delete_on_termination | default(omit) }}"
+      description: "{{ item.aws_instance_net_description | default(omit) }}"
+      device_index: "{{ item.aws_instance_net_device_index | default(omit) }}"
+      groups: "{{ item.aws_instance_net_groups | default(omit) }}"
+      interfaces: "{{ item.aws_instance_net_interfaces | default(omit) }}"
+      ipv6_addresses: "{{ item.aws_instance_net_ipv6_addresses | default(omit) }}"
+      private_ip_address: "{{ item.aws_instance_net_private_ip_address | default(omit) }}"
+      private_ip_addresses: "{{ item.aws_instance_net_private_ip_addresses | default(omit) }}"
+      source_dest_check: "{{ item.aws_instance_source_dest_check | default(omit) }}"
+      subnet_id: "{{ item.aws_instance_subnet_id | default(omit) }}"
+    placement_group: "{{ item.aws_instance_placement_group | default(omit) }}"
+    purge_tags: "{{ item.aws_instance_purge_tags | default(aws_instance_purge_tags) }}"
+    region: "{{ item.aws_region | default(aws_region) }}"
+    security_group: "{{ item.aws_instance_security_group | default(omit) }}"
+    security_groups: "{{ item.aws_instance_security_groups | default(omit) }}"
+    state: present
+    tags: "{{ (item.aws_instance_user_tags | default(aws_instance_user_tags)) | combine(aws_instance_resource_tags) }}"
+    tenancy: "{{ item.aws_instance_tenancy | default(aws_instance_tenancy) }}"
+    termination_protection: "{{ item.aws_instance_termination_protection | default(aws_instance_termination_protection) }}"
+    tower_callback: "{{ item.aws_instance_tower_callback | default(omit) }}"
+    user_data: "{{ item.aws_instance_user_data | default(aws_instance_user_data) }}"
+    volumes: "{{ item.aws_instance_volumes | default(omit) }}"
+    vpc_subnet_id: "{{ __aws_instance_subnet.subnets.0.subnet_id }}"
+    wait: "{{ item.aws_instance_wait | default(aws_instance_wait) }}"
+    wait_timeout: "{{ item.aws_instance_wait_timeout | default(aws_instance_wait_timeout) }}"
+  register: __aws_instance_launch
+  async: 1000
+  poll: 0
+  changed_when: __aws_instance_launch.changed
+
+- name: Wait for provisioning to complete
+  ansible.builtin.async_status:
+    jid: "{{ i.ansible_job_id }}"
+  register: __aws_instance_async_result
+  until: __aws_instance_async_result.finished
+  retries: 300
+  delay: 3
+  loop: "{{ __aws_instance_launch.results }}"
+  loop_control:
+    loop_var: i
+  when: i.ansible_job_id is defined

@@ -1,0 +1,14 @@
+---
+- name: Find desired operating system image
+  amazon.aws.ec2_ami_info:
+    region: "{{ aws_region }}"
+    owners: "{{ aws_images_owners.centos }}"
+    filters:
+      name: "{{ __image_to_lookup.version }}*"
+      architecture: "{{ __image_to_lookup.architecture }}"
+      virtualization-type: "{{ __image_to_lookup.virtualization_type | lower }}"
+  register: __aws_instance_os_image
+
+- name: Sort results to find the latest image
+  ansible.builtin.set_fact:
+    __aws_instance_os_image_latest: "{{ __aws_instance_os_image.images | sort(attribute='creation_date') | last }}"

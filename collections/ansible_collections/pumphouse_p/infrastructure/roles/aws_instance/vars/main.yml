@@ -1,0 +1,75 @@
+---
+aws_instance_resource_tags:
+  managed_by: ansible
+  created_by: ansible
+
+aws_images_owners: 
+  rhel: 309956199498
+  centos: 125523088429
+
+aws_images:
+  rhel:
+    '7':
+      version: 'RHEL-7.9'
+      virtualization_type: 'HVM'
+      release_type: ''
+      subscription_model: 'Access2'
+      volume_type: 'GP2'
+      architecture: 'x86_64'
+    '7.8':
+      version: 'RHEL-7.8'
+      virtualization_type: 'HVM'
+      release_type: ''
+      subscription_model: 'Access2'
+      volume_type: 'GP2'
+      architecture: 'x86_64'
+    '8':
+      version: 'RHEL-8.6.0'
+      virtualization_type: 'HVM'
+      release_type: ''
+      subscription_model: 'Access2'
+      volume_type: 'GP2'
+      architecture: 'x86_64'
+    '8.5':
+      version: 'RHEL-8.5.0'
+      virtualization_type: 'HVM'
+      release_type: ''
+      subscription_model: 'Access2'
+      volume_type: 'GP2'
+      architecture: 'x86_64'
+    '9':
+      version: 'RHEL-9.2.0'
+      virtualization_type: 'HVM'
+      release_type: ''
+      subscription_model: 'Access2'
+      volume_type: 'GP2'
+      architecture: 'x86_64'
+  centos:
+    '7':
+      version: 'CentOS 7.9'
+      virtualization_type: 'hvm'
+      release_type: ''
+      subscription_model: ''
+      volume_type: 'EBS'
+      architecture: 'x86_64'
+    '7.8':
+      version: 'CentOS 7.8'
+      virtualization_type: 'hvm'
+      release_type: ''
+      subscription_model: ''
+      volume_type: 'EBS'
+      architecture: 'x86_64'
+    '8':
+      version: 'CentOS Stream 8'
+      virtualization_type: 'hvm'
+      release_type: ''
+      subscription_model: ''
+      volume_type: 'EBS'
+      architecture: 'x86_64'
+    '8.5':
+      version: 'CentOS 8.5'
+      virtualization_type: 'hvm'
+      release_type: ''
+      subscription_model: ''
+      volume_type: 'EBS'
+      architecture: 'x86_64'
