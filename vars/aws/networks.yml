@@ -26,3 +26,4 @@ aws_gateways:
   - aws_gateway_name: default
     aws_gateway_type: igw
     aws_gateway_vpc: default
+    aws_gateway_state: present
