@@ -11,6 +11,7 @@ aws_instance_tenancy: default
 aws_instance_termination_protection: false
 aws_instance_wait: true
 aws_instance_wait_timeout: 600
+aws_instance_net_assign_public_ip: true
 
 aws_instance_user_data: |
   #!/bin/bash

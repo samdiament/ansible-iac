@@ -60,7 +60,7 @@
     key_name: "{{ item.aws_instance_key_name }}"
     name: "{{ item.aws_instance_name }}"
     network:
-      assign_public_ip: "{{ item.aws_instance_net_assign_public_ip | bool | default(omit) }}"
+      assign_public_ip: "{{ item.aws_instance_net_assign_public_ip | default(aws_instance_net_assign_public_ip) }}"
       delete_on_termination: "{{ item.aws_instance_net_delete_on_termination | default(omit) }}"
       description: "{{ item.aws_instance_net_description | default(omit) }}"
       device_index: "{{ item.aws_instance_net_device_index | default(omit) }}"
