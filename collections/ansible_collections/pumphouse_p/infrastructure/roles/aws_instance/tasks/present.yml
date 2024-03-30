@@ -87,18 +87,18 @@
     wait: "{{ item.aws_instance_wait | default(aws_instance_wait) }}"
     wait_timeout: "{{ item.aws_instance_wait_timeout | default(aws_instance_wait_timeout) }}"
   register: __aws_instance_launch
-  async: 1000
-  poll: 0
-  changed_when: __aws_instance_launch.changed
+#   async: 1000
+#   poll: 0
+#   changed_when: __aws_instance_launch.changed
 
-- name: Wait for provisioning to complete
-  ansible.builtin.async_status:
-    jid: "{{ i.ansible_job_id }}"
-  register: __aws_instance_async_result
-  until: __aws_instance_async_result.finished
-  retries: 300
-  delay: 3
-  loop: "{{ __aws_instance_launch.results }}"
-  loop_control:
-    loop_var: i
-  when: i.ansible_job_id is defined
+# - name: Wait for provisioning to complete
+#   ansible.builtin.async_status:
+#     jid: "{{ i.ansible_job_id }}"
+#   register: __aws_instance_async_result
+#   until: __aws_instance_async_result.finished
+#   retries: 300
+#   delay: 3
+#   loop: "{{ __aws_instance_launch.results }}"
+#   loop_control:
+#     loop_var: i
+#   when: i.ansible_job_id is defined
