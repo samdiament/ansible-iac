@@ -33,7 +33,7 @@
   ansible.builtin.assert:
     that:
       - (__aws_instance_subnet.subnets | length) > 0
-    msg: No subnet found with a name of {{ item.aws_subnet_name }}
+    msg: No subnet found with a name of {{ item.aws_instance_subnet_name }}
 
 - name: Get the public key for user data injection
   amazon.aws.ec2_key_info:
