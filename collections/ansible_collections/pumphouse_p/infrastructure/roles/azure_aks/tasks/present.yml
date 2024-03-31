@@ -2,7 +2,7 @@
 - name: Ensure AKS cluster is present with desired configuration
   azure.azcollection.azure_rm_aks:
     name: "{{ item.azure_aks_name }}"
-    location: "{{ item.azure_aks_location | default(azure_aks_location) )}}"
+    location: "{{ item.azure_aks_location | default(azure_aks_location) }}"
     resource_group: "{{ item.azure_resourcegroup_name | default(azure_resourcegroup_name) }}"
     dns_prefix: "{{ item.azure_aks_dns_prefix | default(azure_aks_dns_prefix) }}"
     agent_pool_profiles: "{{ item.azure_aks_agent_pool_profiles | default(azure_aks_agent_pool_profiles) }}"
