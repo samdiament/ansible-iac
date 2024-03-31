@@ -5,5 +5,20 @@ azure_aks_dns_prefix: akstest
 azure_aks_agent_pool_profiles:
   - name: default
     count: 1
+    vm_size: Standard_B2s
+    enable_auto_scaling: false
+    type: VirtualMachineScaleSets
+    mode: System
+    max_count: 3
+    min_count: 1
+    enable_rbac: true
+  - name: user
+    count: 1
     vm_size: Standard_D2_v2
+    enable_auto_scaling: true
+    type: VirtualMachineScaleSets
+    mode: User
+    max_count: 3
+    min_count: 1
+    enable_rbac: true
 azure_aks_version: '1.29.2'
