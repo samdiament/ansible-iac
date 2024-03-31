@@ -6,7 +6,7 @@ azure_aks_agent_pool_profiles:
   - name: default
     count: 1
     vm_size: Standard_B2s
-    enable_auto_scaling: false
+    enable_auto_scaling: true
     type: VirtualMachineScaleSets
     mode: System
     max_count: 3
