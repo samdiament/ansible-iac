@@ -11,7 +11,7 @@
   register: __azure_aks
   async: 1000
   poll: 0
-  changed_when: __azure_aks.changed
+  changed_when: not __azure_aks.changed
 
 - name: Wait for AKS clusters to finish provisioning
   ansible.builtin.async_status:
