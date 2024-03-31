@@ -1,4 +1,4 @@
 ---
 azure_aks_clusters:
   - azure_aks_name: aks
-    azure_aks_state: present
+    azure_aks_state: absent
