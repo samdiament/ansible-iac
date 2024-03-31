@@ -1,0 +1,4 @@
+---
+azure_aks_clusters:
+  - name: aks
+    azure_aks_state: present
