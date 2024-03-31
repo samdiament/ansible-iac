@@ -6,3 +6,4 @@ azure_aks_agent_pool_profiles:
   - name: default
     count: 1
     vm_size: Standard_D2_v2
+azure_aks_version: '1.29.2'

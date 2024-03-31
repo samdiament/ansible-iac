@@ -6,4 +6,5 @@
     resource_group: "{{ item.azure_resourcegroup_name | default(azure_resourcegroup_name) }}"
     dns_prefix: "{{ item.azure_aks_dns_prefix | default(azure_aks_dns_prefix) }}"
     agent_pool_profiles: "{{ item.azure_aks_agent_pool_profiles | default(azure_aks_agent_pool_profiles) }}"
+    kubernetes_version: "{{ item.azure_aks_version | default(azure_aks_version) }}"
   loop: "{{ azure_aks_clusters | selectattr('azure_aks_state', '==', 'present') }}"
