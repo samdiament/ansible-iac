@@ -8,3 +8,17 @@
     agent_pool_profiles: "{{ item.azure_aks_agent_pool_profiles | default(azure_aks_agent_pool_profiles) }}"
     kubernetes_version: "{{ item.azure_aks_version | default(azure_aks_version) }}"
   loop: "{{ azure_aks_clusters | selectattr('azure_aks_state', '==', 'present') }}"
+  register: __azure_aks
+  async: 1000
+  poll: 0
+  changed_when: __azure_aks.changed
+
+- name: Wait for AKS clusters to finish provisioning
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __azure_aks_async_result
+  until: __azure_aks_async_result.finished
+  retries: 300
+  delay: 6
+  loop: "{{ __azure_aks.results }}"
+  when: item.ansible_job_id is defined

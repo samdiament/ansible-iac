@@ -4,4 +4,18 @@
     name: "{{ item.azure_aks_name }}"
     state: absent
     resource_group: "{{ item.azure_resourcegroup_name | default(azure_resourcegroup_name) }}"
-  loop: "{{ azure_aks_clusters | selectattr('azure_aks_state', '==', 'present') }}"
+  loop: "{{ azure_aks_clusters | selectattr('azure_aks_state', '==', 'absent') }}"
+  register: __azure_aks
+  async: 1000
+  poll: 0
+  changed_when: __azure_aks.changed
+
+- name: Wait for AKS clusters to finish deprovisioning
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: __azure_aks_async_result
+  until: __azure_aks_async_result.finished
+  retries: 300
+  delay: 6
+  loop: "{{ __azure_aks.results }}"
+  when: item.ansible_job_id is defined  
