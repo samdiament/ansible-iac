@@ -11,7 +11,6 @@ azure_aks_agent_pool_profiles:
     mode: System
     max_count: 3
     min_count: 1
-    enable_rbac: true
   - name: user
     count: 1
     vm_size: Standard_D2_v2
@@ -20,5 +19,4 @@ azure_aks_agent_pool_profiles:
     mode: User
     max_count: 3
     min_count: 1
-    enable_rbac: true
 azure_aks_version: '1.29.2'
