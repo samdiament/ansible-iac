@@ -1,0 +1,8 @@
+---
+azure_aks_clusters: []
+azure_aks_location: eastus
+azure_aks_dns_prefix: akstest
+azure_aks_agent_pool_profiles:
+  - name: default
+    count: 1
+    vm_size: Standard_D2_v2

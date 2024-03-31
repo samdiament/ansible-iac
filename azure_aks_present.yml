@@ -1,0 +1,16 @@
+---
+- name: Ensure AKS clusters are present
+  hosts: azureclient
+  become: false
+  gather_facts: false
+  vars:
+    azure_mode: provision
+
+  tasks:
+    - name: Load variables
+      ansible.builtin.include_vars:
+        dir: vars/azure
+
+    - name: Provision AKS clusters
+      ansible.builtin.include_role:
+        name: pumphouse_p.infrastructure.azure_aks

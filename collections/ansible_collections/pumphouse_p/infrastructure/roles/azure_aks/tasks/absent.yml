@@ -1,0 +1,7 @@
+---
+- name: Ensure AKS cluster is absent
+  azure.azcollection.azure_rm_aks:
+    name: "{{ item.azure_aks_name }}"
+    state: absent
+    resource_group: "{{ item.azure_resourcegroup_name | default(azure_resourcegroup_name) }}"
+  loop: "{{ azure_aks_clusters | selectattr('azure_aks_state', '==', 'present') }}"
