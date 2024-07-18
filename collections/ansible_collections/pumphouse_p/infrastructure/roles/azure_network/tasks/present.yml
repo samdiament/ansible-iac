@@ -10,7 +10,7 @@
     purge_dns_servers: "{{ network.purge_dns_servers | default(azure_network_purge_dns_servers) }}"
     tags: "{{ network.tags | default({}) | combine(azure_network_common_tags) }}"
     state: present
-  loop: "{{ azure_networks | selectattr('state', '==', 'present') | wantlist=true }}"
+  loop: "{{ azure_networks | selectattr('state', '==', 'present') }}"
   loop_control:
     loop_var: network
   register: __present_networks
