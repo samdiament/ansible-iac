@@ -11,7 +11,7 @@
     tags: "{{ network.tags | default({}) | combine(azure_network_common_tags) }}"
     state: present
   #loop: "{{ azure_networks | selectattr('state', '==', 'present') }}"
-  loop: "{{ azure_networks if state == 'present' }}"
+  loop: "{{ azure_networks if azure_networks['state'] == 'present' }}"
   loop_control:
     loop_var: network
   register: __present_networks
