@@ -6,4 +6,9 @@ azure_instances:
     azure_subnet_name: default
     azure_virtualmachine_state: present
     azure_virtualmachine_count: 1
+  - azure_virtualmachine_name: web
+    azure_virtualmachine_os: rhel_9
+    azure_virtualnetwork_name: default
+    azure_subnet_name: default
+    azure_virtualmachine_state: absent
 
