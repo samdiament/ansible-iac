@@ -6,7 +6,7 @@
 
   tasks:
     - name: Ensure inventory sources are synced in controller
-      inventory_source_update:
+      awx.awx.inventory_source_update:
         name: "{{ inventory_source_name }}"
         inventory: "{{ inventory_name }}"
         #validate_certs: false
