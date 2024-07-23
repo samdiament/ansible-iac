@@ -1,0 +1,15 @@
+---
+- name: Ensure inventory sources are synced in controller
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Ensure inventory sources are synced in controller
+      awx.awx.inventory_source_update:
+        name: "{{ inventory_source_name }}"
+        inventory: "{{ inventory_name }}"
+        validate_certs: false
+        controller_host: "{{ controller_url }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
