@@ -5,5 +5,5 @@ azure_instances:
     azure_virtualnetwork_name: default
     azure_subnet_name: default
     azure_virtualmachine_state: present
-    azure_virtualmachine_count: 2
+    azure_virtualmachine_count: 3
 
